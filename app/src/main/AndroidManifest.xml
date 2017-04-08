@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+
     <application
         android:name=".App"
         android:allowBackup="false"
@@ -13,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.pedalfaster.launcher.activity.HomeActivity"
+            android:name=".activity.HomeActivity"
             android:label="Pedal Faster Launcher"
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
@@ -27,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.pedalfaster.launcher.activity.PreferenceActivity"/>
+        <activity android:name=".activity.PreferenceActivity"/>
 
     </application>
 
