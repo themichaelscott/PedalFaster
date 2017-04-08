@@ -3,11 +3,17 @@ package com.pedalfaster.launcher.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
+import com.pedalfaster.launcher.event.BluetoothConnectedEvent
 import com.pedalfaster.launcher.job.AppJobCreator
 import com.pedalfaster.launcher.job.Scheduler
 import kotlinx.android.synthetic.main.activity_home.*
+import pocketbus.Bus
+import pocketbus.Subscribe
+import pocketbus.ThreadMode
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeActivity : FragmentActivity() {
@@ -16,6 +22,8 @@ class HomeActivity : FragmentActivity() {
     lateinit var appJobCreator: AppJobCreator
     @Inject
     lateinit var scheduler: Scheduler
+    @Inject
+    lateinit var bus: Bus
 
     init {
         Injector.get().inject(this)
@@ -23,9 +31,15 @@ class HomeActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        bus.register(this)
         setContentView(R.layout.activity_home)
         settingsButton.setOnClickListener { onSettingsButtonClick() }
         youTubeButton.setOnClickListener { launchYouTube() }
+    }
+
+    override fun onDestroy() {
+        bus.unregister(this)
+        super.onDestroy()
     }
 
     fun launchYouTube() {
@@ -39,4 +53,12 @@ class HomeActivity : FragmentActivity() {
         startActivity(settingIntent)
     }
 
+    @Subscribe(ThreadMode.MAIN)
+    fun handle(event: BluetoothConnectedEvent) {
+        Timber.d("Event received: ${event.time}")
+        MaterialDialog.Builder(this)
+                .content("Event received: ${event.time}")
+                .build()
+                .show()
+    }
 }

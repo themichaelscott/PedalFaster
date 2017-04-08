@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 class BluetoothListenerJob
 @Inject
-constructor() : Job() {
+constructor(private val bluetoothChecker: BluetoothChecker) : Job() {
 
     override fun onRunJob(params: Job.Params): Job.Result {
-        // listening, but not posting an event to update the UI
         Timber.d("BluetoothListenerJob executed")
+        bluetoothChecker.check()
         return Job.Result.SUCCESS
     }
 

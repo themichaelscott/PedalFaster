@@ -4,15 +4,18 @@ import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
 import com.evernote.android.job.JobManager
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pedalfaster.launcher.dagger.AppModule
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.job.AppJobCreator
 import com.pedalfaster.launcher.logging.DebugTree
 import com.pedalfaster.launcher.logging.ReleaseTree
 import com.pedalfaster.launcher.prefs.Prefs
+import pocketbus.Registry
 import timber.log.Timber
 import javax.inject.Inject
 
+@Registry
 class App : Application() {
 
     @Inject
@@ -26,6 +29,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(this)
         Injector.get().inject(this)
         setupLogging()
         JobManager.create(this).addJobCreator(appJobCreator)
