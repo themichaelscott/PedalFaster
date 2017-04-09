@@ -1,6 +1,7 @@
 package com.pedalfaster.launcher.prefs
 
 import android.content.SharedPreferences
+import com.pedalfaster.launcher.prefs.ext.saveBoolean
 import com.pedalfaster.launcher.prefs.ext.saveLong
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,14 +10,19 @@ import javax.inject.Singleton
 class Prefs @Inject
 constructor(private val preferences: SharedPreferences) {
 
-    var startupWindow: Long
-        get() = preferences.getLong(PREF_STARTUP_WINDOW, DEFAULT_STARTUP_WINDOW)
-        set(startupWindow) = preferences.saveLong(PREF_STARTUP_WINDOW, startupWindow)
+    var keepPedalingEnabled: Boolean
+        get() = preferences.getBoolean(PREF_KEEP_PEDALING_ENABLED, true)
+        set(enabled) = preferences.saveBoolean(PREF_KEEP_PEDALING_ENABLED, enabled)
+
+    var startupDelayBeforePrompt: Long
+        get() = preferences.getLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, DEFAULT_STARTUP_WINDOW)
+        set(startupWindow) = preferences.saveLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, startupWindow)
 
     companion object {
-        val PREF_STARTUP_WINDOW = "PREF_STARTUP_WINDOW"
+        val PREF_KEEP_PEDALING_ENABLED = "PREF_KEEP_PEDALING_ENABLED"
+        val PREF_STARTUP_DELAY_BEFORE_PROMPT = "PREF_STARTUP_DELAY_BEFORE_PROMPT"
 
-        val DEFAULT_STARTUP_WINDOW = 60L
+        val DEFAULT_STARTUP_WINDOW = 60L // in seconds
     }
 
 }

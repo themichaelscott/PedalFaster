@@ -12,7 +12,7 @@ class Scheduler
 @Inject constructor(val prefs: Prefs) {
 
     fun scheduleBluetoothListenerJob() {
-        val startupWindow: Long = TimeUnit.SECONDS.toMillis(prefs.startupWindow)
+        val startupWindow: Long = TimeUnit.SECONDS.toMillis(prefs.startupDelayBeforePrompt)
         val startupWindowBuffer = startupWindow + STARTUP_WINDOW_BUFFER_MS
         JobRequest.Builder(BluetoothListenerJob.TAG)
                 .setUpdateCurrent(true) // if an app is launched again, this will restart the counter for the bluetooth to start
