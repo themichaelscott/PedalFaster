@@ -45,6 +45,15 @@ class HomeActivity : FragmentActivity() {
     }
 
     fun launchYouTube() {
+        if (prefs.keepPedalingEnabled && prefs.bluetoothDeviceAddress.isBlank()) {
+            MaterialDialog.Builder(this)
+                    .title("Unable to open YouTube")
+                    .content("Apps can't be launched until there is a bluetooth device selected.\nPlease open \"Settings\" to select a device.")
+                    .positiveText("OK")
+                    .build()
+                    .show()
+            return
+        }
         val launchYouTube = packageManager.getLaunchIntentForPackage("com.google.android.youtube")
         scheduler.scheduleBluetoothListenerJob()
         startActivity(launchYouTube)

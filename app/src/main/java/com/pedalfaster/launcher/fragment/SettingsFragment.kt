@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.text.InputType
 import android.view.MenuItem
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
@@ -127,7 +126,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 .positiveText("OK")
                 .show()
-        Toast.makeText(context, "Bluetooth clicked", Toast.LENGTH_SHORT).show()
         return true
     }
 
