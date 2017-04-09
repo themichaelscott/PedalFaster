@@ -30,7 +30,7 @@ class HomeActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         bus.register(this)
         setContentView(R.layout.activity_home)
-        settingsButton.setOnClickListener { onSettingsButtonClick() }
+        settingsButton.setOnLongClickListener { onSettingsButtonClick() }
         youTubeButton.setOnClickListener { launchYouTube() }
     }
 
@@ -45,9 +45,10 @@ class HomeActivity : FragmentActivity() {
         startActivity(launchYouTube)
     }
 
-    fun onSettingsButtonClick() {
+    fun onSettingsButtonClick(): Boolean {
         val settingIntent = Intent(this, PreferenceActivity::class.java)
         startActivity(settingIntent)
+        return true
     }
 
     @Subscribe(ThreadMode.MAIN)
