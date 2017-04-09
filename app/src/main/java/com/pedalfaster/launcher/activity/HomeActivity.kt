@@ -10,6 +10,7 @@ import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.event.BluetoothConnectedEvent
 import com.pedalfaster.launcher.job.Scheduler
+import com.pedalfaster.launcher.prefs.Prefs
 import kotlinx.android.synthetic.main.activity_home.*
 import pocketbus.Bus
 import pocketbus.Subscribe
@@ -23,6 +24,8 @@ class HomeActivity : FragmentActivity() {
     lateinit var scheduler: Scheduler
     @Inject
     lateinit var bus: Bus
+    @Inject
+    lateinit var prefs: Prefs
 
     init {
         Injector.get().inject(this)
@@ -55,9 +58,12 @@ class HomeActivity : FragmentActivity() {
 
     @Subscribe(ThreadMode.MAIN)
     fun handle(event: BluetoothConnectedEvent) {
-        val message = "Event received - connected: ${event.connected}, ${event.time}"
-        Timber.d(message)
+        Timber.d("Event received - connected: ${event.connected}, ${event.time}")
+        Timber.d("keepPedalingEnabled = ${prefs.keepPedalingEnabled}")
         scheduler.cancelBluetoothListenerJob()
+        if (!prefs.keepPedalingEnabled) {
+            return
+        }
         when {
             event.connected -> {
                 val keepPedalingDialog = supportFragmentManager.findFragmentByTag(KeepPedalingDialogFragment.TAG)
