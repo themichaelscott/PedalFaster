@@ -7,7 +7,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.event.BluetoothConnectedEvent
-import com.pedalfaster.launcher.job.AppJobCreator
 import com.pedalfaster.launcher.job.Scheduler
 import kotlinx.android.synthetic.main.activity_home.*
 import pocketbus.Bus
@@ -18,8 +17,6 @@ import javax.inject.Inject
 
 class HomeActivity : FragmentActivity() {
 
-    @Inject
-    lateinit var appJobCreator: AppJobCreator
     @Inject
     lateinit var scheduler: Scheduler
     @Inject
@@ -57,9 +54,21 @@ class HomeActivity : FragmentActivity() {
     fun handle(event: BluetoothConnectedEvent) {
         val message = "Event received - connected: ${event.connected}, ${event.time}"
         Timber.d(message)
-        MaterialDialog.Builder(this)
-                .content(message)
-                .build()
-                .show()
+        scheduler.cancelBluetoothListenerJob()
+        when {
+            event.connected -> {
+                // find dialog by tag and dismiss it if it exists
+            }
+            else -> MaterialDialog.Builder(this)
+                    .content(message)
+                    .cancelable(false)
+                    .tag(TAG)
+                    .build()
+                    .show()
+        }
+    }
+
+    companion object {
+        private val TAG = "HomeActivity"
     }
 }

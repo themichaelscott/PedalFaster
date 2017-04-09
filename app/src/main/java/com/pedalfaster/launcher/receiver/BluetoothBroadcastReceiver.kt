@@ -4,13 +4,16 @@ import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.pedalfaster.launcher.event.BluetoothConnectedEvent
+import org.threeten.bp.LocalDateTime
+import pocketbus.Bus
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BluetoothBroadcastReceiver @Inject
-constructor() : BroadcastReceiver() {
+class BluetoothBroadcastReceiver
+@Inject constructor(private val bus: Bus) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
@@ -23,6 +26,7 @@ constructor() : BroadcastReceiver() {
             BluetoothDevice.ACTION_ACL_CONNECTED -> bluetoothConnection = true
             BluetoothDevice.ACTION_ACL_DISCONNECTED -> bluetoothConnection = false
         }
+        bus.post(BluetoothConnectedEvent(bluetoothConnection, LocalDateTime.now()))
     }
 
     companion object {
