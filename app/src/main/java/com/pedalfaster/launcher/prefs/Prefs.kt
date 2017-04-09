@@ -3,6 +3,7 @@ package com.pedalfaster.launcher.prefs
 import android.content.SharedPreferences
 import com.pedalfaster.launcher.prefs.ext.saveBoolean
 import com.pedalfaster.launcher.prefs.ext.saveLong
+import com.pedalfaster.launcher.prefs.ext.saveString
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,9 +19,14 @@ constructor(private val preferences: SharedPreferences) {
         get() = preferences.getLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, DEFAULT_STARTUP_WINDOW)
         set(startupWindow) = preferences.saveLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, startupWindow)
 
+    var bluetoothDeviceAddress: String
+        get() = preferences.getString(PREF_BLUETOOTH_DEVICE_ADDRESS, "")
+        set(bluetoothDeviceAddress) = preferences.saveString(PREF_BLUETOOTH_DEVICE_ADDRESS, bluetoothDeviceAddress)
+
     companion object {
         val PREF_KEEP_PEDALING_ENABLED = "PREF_KEEP_PEDALING_ENABLED"
         val PREF_STARTUP_DELAY_BEFORE_PROMPT = "PREF_STARTUP_DELAY_BEFORE_PROMPT"
+        val PREF_BLUETOOTH_DEVICE_ADDRESS = "PREF_BLUETOOTH_DEVICE_ADDRESS"
 
         val DEFAULT_STARTUP_WINDOW = 60L // in seconds
     }
