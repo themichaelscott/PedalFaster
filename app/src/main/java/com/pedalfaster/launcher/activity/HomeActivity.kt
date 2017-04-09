@@ -1,7 +1,9 @@
 package com.pedalfaster.launcher.activity
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
@@ -58,18 +60,30 @@ class HomeActivity : FragmentActivity() {
         scheduler.cancelBluetoothListenerJob()
         when {
             event.connected -> {
-                // find dialog by tag and dismiss it if it exists
+                val keepPedalingDialog = supportFragmentManager.findFragmentByTag(KeepPedalingDialogFragment.TAG)
+                if (keepPedalingDialog is KeepPedalingDialogFragment) {
+                    keepPedalingDialog.dismiss()
+                }
             }
-            else -> MaterialDialog.Builder(this)
-                    .content(message)
-                    .cancelable(false)
-                    .tag(TAG)
-                    .build()
-                    .show()
+            else -> {
+                KeepPedalingDialogFragment()
+                        .show(supportFragmentManager, KeepPedalingDialogFragment.TAG)
+            }
         }
     }
 
-    companion object {
-        private val TAG = "HomeActivity"
+    class KeepPedalingDialogFragment : DialogFragment() {
+
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return MaterialDialog.Builder(context)
+                    .content("Keep pedaling") // todo - replace with icon of bicycle
+                    .cancelable(false)
+                    .tag(TAG)
+                    .build()
+        }
+
+        companion object {
+            val TAG: String = KeepPedalingDialogFragment::class.java.simpleName
+        }
     }
 }
