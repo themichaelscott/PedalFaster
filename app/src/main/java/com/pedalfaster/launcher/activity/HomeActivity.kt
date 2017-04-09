@@ -66,6 +66,9 @@ class HomeActivity : FragmentActivity() {
                 }
             }
             else -> {
+                // todo - now that it is using a dialog fragment, we can't pop a message when youtube launches because
+                // onSaveInstanceState has been called when user leaves HomeActivity
+                // because of this show() throws an exception
                 KeepPedalingDialogFragment()
                         .show(supportFragmentManager, KeepPedalingDialogFragment.TAG)
             }
