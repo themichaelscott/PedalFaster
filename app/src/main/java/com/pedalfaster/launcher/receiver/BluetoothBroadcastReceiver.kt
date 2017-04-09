@@ -15,13 +15,19 @@ constructor() : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
         val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-
-        // todo - implement actions to be taken
-        when (action) {
-            BluetoothDevice.ACTION_ACL_CONNECTED -> Timber.i("Device connected: ${device.name}, address: ${device.address}")
-            BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED -> Timber.i("Device is about to disconnect: ${device.name}, address: ${device.address}")
-            BluetoothDevice.ACTION_ACL_DISCONNECTED -> Timber.i("Device has disconnected: ${device.name}, address: ${device.address}")
+        Timber.i("Device status updated: $action, ${device.name}, address: ${device.address}")
+        if (device.address != bluetoothAddress) {
+            return
         }
+        when (action) {
+            BluetoothDevice.ACTION_ACL_CONNECTED -> bluetoothConnection = true
+            BluetoothDevice.ACTION_ACL_DISCONNECTED -> bluetoothConnection = false
+        }
+    }
+
+    companion object {
+        var bluetoothConnection: Boolean = false
+        var bluetoothAddress = "00:18:6B:4D:3D:26"
     }
 
 }

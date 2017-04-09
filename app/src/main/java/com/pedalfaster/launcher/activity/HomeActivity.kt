@@ -55,9 +55,10 @@ class HomeActivity : FragmentActivity() {
 
     @Subscribe(ThreadMode.MAIN)
     fun handle(event: BluetoothConnectedEvent) {
-        Timber.d("Event received: ${event.time}")
+        val message = "Event received - connected: ${event.connected}, ${event.time}"
+        Timber.d(message)
         MaterialDialog.Builder(this)
-                .content("Event received: ${event.time}")
+                .content(message)
                 .build()
                 .show()
     }
