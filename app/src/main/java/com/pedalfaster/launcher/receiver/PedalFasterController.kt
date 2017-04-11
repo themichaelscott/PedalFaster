@@ -13,36 +13,27 @@ import javax.inject.Singleton
 class PedalFasterController
 @Inject constructor(private val application: Application, private val prefs: Prefs) {
 
+    // todo - synchronize the map
+    private var bluetoothStatusMap: MutableMap<String, BluetoothStatus> = mutableMapOf()
+
     fun updateBluetooth(deviceAddress: String, status: BluetoothStatus) {
-        if (deviceAddress != prefs.bluetoothDeviceAddress) {
-            return
+        bluetoothStatusMap.put(deviceAddress, status)
+        if (deviceAddress == prefs.activeBluetoothDeviceAddress) {
+            notifyOfBluetoothStatus()
         }
-        when (status) {
-            BluetoothStatus.CONNECTED -> bluetoothStatus = BluetoothStatus.CONNECTED
-            BluetoothStatus.DISCONNECTED -> bluetoothStatus = BluetoothStatus.DISCONNECTED
-            else -> {
-                Timber.e("Unknown bluetooth status provided for: $deviceAddress")
-            }
-        }
-        notifyOfBluetoothStatus()
     }
 
     fun notifyOfBluetoothStatus() {
+        val bluetoothStatus = getActiveDeviceStatus()
         val intent = Intent(application, PedalFasterPopupActivity::class.java)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra(PedalFasterPopupActivity.EXTRA_BLUETOOTH_STATUS, bluetoothStatus)
         application.startActivity(intent)
     }
 
-    fun resetBluetoothStatus() {
-        bluetoothStatus = BluetoothStatus.UNKNOWN
+    private fun getActiveDeviceStatus(): BluetoothStatus {
+        val bluetoothStatus = bluetoothStatusMap[prefs.activeBluetoothDeviceAddress] ?: BluetoothStatus.UNKNOWN
+        Timber.d("Bluetooth status for ${prefs.activeBluetoothDeviceAddress}: $bluetoothStatus")
+        return bluetoothStatus
     }
-
-    companion object {
-        // todo - change this to a map and track ALL bluetooth device connections
-        // so if user wants to change their bluetooth pairing they can do it without toggling it on and off
-        // to make sure it is recognized
-        var bluetoothStatus: BluetoothStatus = BluetoothStatus.UNKNOWN
-    }
-
 }

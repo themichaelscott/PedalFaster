@@ -19,8 +19,8 @@ constructor(private val preferences: SharedPreferences) {
         get() = preferences.getLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, DEFAULT_STARTUP_WINDOW)
         set(startupWindow) = preferences.saveLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, startupWindow)
 
-    var bluetoothDeviceAddress: String
-        get() = preferences.getString(PREF_BLUETOOTH_DEVICE_ADDRESS, "")
+    var activeBluetoothDeviceAddress: String
+        get() = preferences.getString(PREF_BLUETOOTH_DEVICE_ADDRESS, DEFAULT_BLUETOOTH_DEVICE_ADDRESS)
         set(bluetoothDeviceAddress) = preferences.saveString(PREF_BLUETOOTH_DEVICE_ADDRESS, bluetoothDeviceAddress)
 
     companion object {
@@ -29,6 +29,8 @@ constructor(private val preferences: SharedPreferences) {
         val PREF_BLUETOOTH_DEVICE_ADDRESS = "PREF_BLUETOOTH_DEVICE_ADDRESS"
 
         val DEFAULT_STARTUP_WINDOW = 60L // in seconds
+
+        private val DEFAULT_BLUETOOTH_DEVICE_ADDRESS = ""
     }
 
 }

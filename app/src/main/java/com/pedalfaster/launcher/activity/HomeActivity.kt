@@ -30,7 +30,7 @@ class HomeActivity : FragmentActivity() {
     }
 
     fun launchYouTube() {
-        if (prefs.keepPedalingEnabled && prefs.bluetoothDeviceAddress.isBlank()) {
+        if (prefs.keepPedalingEnabled && prefs.activeBluetoothDeviceAddress.isBlank()) {
             MaterialDialog.Builder(this)
                     .title("Unable to open YouTube")
                     .content("Apps can't be launched until there is a bluetooth device selected.\nPlease open \"Settings\" to select a device.")

@@ -108,7 +108,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         var selectedPosition = -1
         deviceAddressList.forEachIndexed { index, s ->
-            if (s == prefs.bluetoothDeviceAddress) {
+            if (s == prefs.activeBluetoothDeviceAddress) {
                 selectedPosition = index
                 return@forEachIndexed
             }
@@ -119,12 +119,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 .items(deviceNameDisplayList)
                 .itemsCallbackSingleChoice(selectedPosition) { _, _, which, _ ->
                     if (which >= 0 && which < deviceAddressList.size) {
-                        prefs.bluetoothDeviceAddress = deviceAddressList[which]
+                        prefs.activeBluetoothDeviceAddress = deviceAddressList[which]
                         updateBluetoothDeviceSummary()
-                    }
-                    // if the device is different than prior, reset the connection
-                    if (which != selectedPosition) {
-                        pedalFasterController.resetBluetoothStatus()
                     }
                     return@itemsCallbackSingleChoice true
                 }
@@ -135,7 +131,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun updateBluetoothDeviceSummary(): Boolean {
         val bluetoothDevicePref = findPreference(Prefs.PREF_BLUETOOTH_DEVICE_ADDRESS)
-        val bluetoothAddress = prefs.bluetoothDeviceAddress
+        val bluetoothAddress = prefs.activeBluetoothDeviceAddress
         if (bluetoothAddress.isBlank() || !BluetoothAdapter.checkBluetoothAddress(bluetoothAddress)) {
             bluetoothDevicePref?.summary = "Choose a device"
         } else {
