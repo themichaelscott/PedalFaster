@@ -41,7 +41,6 @@ class HomeActivity : FragmentActivity() {
         }
         scheduler.scheduleBluetoothListenerJob()
         val launchYouTubeIntent = packageManager.getLaunchIntentForPackage("com.google.android.youtube")
-        launchYouTubeIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(launchYouTubeIntent)
     }
 
@@ -49,6 +48,10 @@ class HomeActivity : FragmentActivity() {
         val settingIntent = Intent(this, PreferenceActivity::class.java)
         startActivity(settingIntent)
         return true
+    }
+
+    override fun onBackPressed() {
+        // do nothing - prevents user from leaving launcher
     }
 
 }

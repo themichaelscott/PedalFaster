@@ -5,9 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7f000000"
     >
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cyclerImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
