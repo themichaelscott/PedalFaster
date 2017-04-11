@@ -30,9 +30,7 @@ class PedalFasterController
 
     fun notifyOfBluetoothStatus() {
         if (getActiveDeviceStatus() == BluetoothStatus.CONNECTED) {
-            if (pedalFasterView != null) {
-                windowManager.removeView(pedalFasterView)
-            }
+            dismissPedalFasterView()
         } else {
             val windowManagerParams = WindowManager.LayoutParams(
                     WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
@@ -40,6 +38,16 @@ class PedalFasterController
                     PixelFormat.TRANSLUCENT)
             pedalFasterView = PedalFasterView(application)
             windowManager.addView(pedalFasterView, windowManagerParams)
+        }
+    }
+
+    fun dismissPedalFasterView() {
+        if (pedalFasterView != null) {
+            try {
+                windowManager.removeView(pedalFasterView)
+            } catch (e: IllegalArgumentException) {
+                Timber.e(e, "View not attached?  Continue running app")
+            }
         }
     }
 

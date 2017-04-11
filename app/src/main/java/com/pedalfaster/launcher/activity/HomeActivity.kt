@@ -12,6 +12,7 @@ import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.prefs.Prefs
+import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
@@ -22,6 +23,8 @@ class HomeActivity : FragmentActivity() {
     lateinit var scheduler: Scheduler
     @Inject
     lateinit var prefs: Prefs
+    @Inject
+    lateinit var pedalFasterController: PedalFasterController
 
     init {
         Injector.get().inject(this)
@@ -32,8 +35,8 @@ class HomeActivity : FragmentActivity() {
         setContentView(R.layout.activity_home)
         settingsButton.setOnLongClickListener { onSettingsButtonClick() }
         youTubeButton.setOnClickListener { launchYouTube() }
-
-        // todo - kill existing pedalFasterView if it exists
+        // kill existing pedalFasterView if it exists
+        pedalFasterController.dismissPedalFasterView()
     }
 
     @TargetApi(Build.VERSION_CODES.M)
