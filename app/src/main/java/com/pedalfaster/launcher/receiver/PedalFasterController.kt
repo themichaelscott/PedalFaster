@@ -16,10 +16,13 @@ import javax.inject.Singleton
 class PedalFasterController
 @Inject constructor(private val application: Application, private val prefs: Prefs) {
 
+    // todo - change to property
+    var showAlert = false
+
     // todo - synchronize the map
     private var bluetoothStatusMap: MutableMap<String, BluetoothStatus> = mutableMapOf()
-    var windowManager: WindowManager = application.getSystemService(WINDOW_SERVICE) as WindowManager
-    var pedalFasterView: View? = null
+    private var windowManager: WindowManager = application.getSystemService(WINDOW_SERVICE) as WindowManager
+    private var pedalFasterView: View? = null
 
     fun updateBluetooth(deviceAddress: String, status: BluetoothStatus) {
         bluetoothStatusMap.put(deviceAddress, status)
@@ -29,16 +32,19 @@ class PedalFasterController
     }
 
     fun notifyOfBluetoothStatus() {
-        if (getActiveDeviceStatus() == BluetoothStatus.CONNECTED) {
-            dismissPedalFasterView()
-        } else {
-            val windowManagerParams = WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                    PixelFormat.TRANSLUCENT)
-            pedalFasterView = PedalFasterView(application)
-            windowManager.addView(pedalFasterView, windowManagerParams)
+        when {
+            getActiveDeviceStatus() == BluetoothStatus.CONNECTED -> dismissPedalFasterView()
+            showAlert -> showPedalFasterView()
         }
+    }
+
+    private fun showPedalFasterView() {
+        val windowManagerParams = WindowManager.LayoutParams(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                PixelFormat.TRANSLUCENT)
+        pedalFasterView = PedalFasterView(application)
+        windowManager.addView(pedalFasterView, windowManagerParams)
     }
 
     fun dismissPedalFasterView() {

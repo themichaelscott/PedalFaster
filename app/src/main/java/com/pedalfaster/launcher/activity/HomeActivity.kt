@@ -35,8 +35,13 @@ class HomeActivity : FragmentActivity() {
         setContentView(R.layout.activity_home)
         settingsButton.setOnLongClickListener { onSettingsButtonClick() }
         youTubeButton.setOnClickListener { launchYouTube() }
+    }
+
+    override fun onResume() {
+        super.onResume()
         // kill existing pedalFasterView if it exists
         pedalFasterController.dismissPedalFasterView()
+        pedalFasterController.showAlert = false
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -81,6 +86,7 @@ class HomeActivity : FragmentActivity() {
         scheduler.schedulePedalFasterInterruptor()
         val launchYouTubeIntent = packageManager.getLaunchIntentForPackage("com.google.android.youtube")
         startActivity(launchYouTubeIntent)
+        pedalFasterController.showAlert = true
     }
 
     fun onSettingsButtonClick(): Boolean {
