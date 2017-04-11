@@ -11,7 +11,7 @@ import javax.inject.Inject
 class Scheduler
 @Inject constructor(val prefs: Prefs) {
 
-    fun scheduleBluetoothListenerJob() {
+    fun schedulePedalFasterInterruptor() {
         val startupWindow: Long = TimeUnit.SECONDS.toMillis(prefs.startupDelayBeforePrompt)
         val startupWindowBuffer = startupWindow + STARTUP_WINDOW_BUFFER_MS
         JobRequest.Builder(BluetoothListenerJob.TAG)
