@@ -5,8 +5,12 @@ import android.content.Context.WINDOW_SERVICE
 import android.graphics.PixelFormat
 import android.view.View
 import android.view.WindowManager
+import com.pedalfaster.launcher.event.CheckBluetoothStatusEvent
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.view.PedalFasterView
+import pocketbus.Bus
+import pocketbus.Subscribe
+import pocketbus.ThreadMode
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,7 +18,8 @@ import javax.inject.Singleton
 
 @Singleton
 class PedalFasterController
-@Inject constructor(private val application: Application, private val prefs: Prefs) {
+@Inject constructor(private val application: Application, private val prefs: Prefs, bus: Bus) {
+
 
     // todo - change to property
     var showAlert = false
@@ -23,6 +28,10 @@ class PedalFasterController
     private var bluetoothStatusMap: MutableMap<String, BluetoothStatus> = mutableMapOf()
     private var windowManager: WindowManager = application.getSystemService(WINDOW_SERVICE) as WindowManager
     private var pedalFasterView: View? = null
+
+    init {
+        bus.register(this)
+    }
 
     fun updateBluetooth(deviceAddress: String, status: BluetoothStatus) {
         bluetoothStatusMap.put(deviceAddress, status)
@@ -36,6 +45,11 @@ class PedalFasterController
             getActiveDeviceStatus() == BluetoothStatus.CONNECTED -> dismissPedalFasterView()
             showAlert -> showPedalFasterView()
         }
+    }
+
+    @Subscribe(ThreadMode.MAIN)
+    fun handle(event: CheckBluetoothStatusEvent) {
+        showPedalFasterView()
     }
 
     private fun showPedalFasterView() {
