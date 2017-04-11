@@ -9,7 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.prefs.Prefs
-import com.pedalfaster.launcher.receiver.BluetoothBroadcastReceiver
+import com.pedalfaster.launcher.receiver.PedalFasterController
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -116,11 +116,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 .title("Bluetooth Devices")
                 .items(deviceNameDisplayList)
                 .itemsCallbackSingleChoice(selectedPosition) { _, _, which, _ ->
-                    prefs.bluetoothDeviceAddress = deviceAddressList[which]
-                    updateBluetoothDeviceSummary()
+                    if (which >= 0 && which < deviceAddressList.size) {
+                        prefs.bluetoothDeviceAddress = deviceAddressList[which]
+                        updateBluetoothDeviceSummary()
+                    }
                     // if the device is different than prior, reset the connection
                     if (which != selectedPosition) {
-                        BluetoothBroadcastReceiver.bluetoothConnection = false
+                        PedalFasterController.bluetoothConnection = false
                     }
                     return@itemsCallbackSingleChoice true
                 }

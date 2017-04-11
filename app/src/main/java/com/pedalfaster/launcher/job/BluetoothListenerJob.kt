@@ -2,7 +2,7 @@ package com.pedalfaster.launcher.job
 
 import com.evernote.android.job.Job
 import com.pedalfaster.launcher.event.BluetoothConnectedEvent
-import com.pedalfaster.launcher.receiver.BluetoothBroadcastReceiver
+import com.pedalfaster.launcher.receiver.PedalFasterController
 import org.threeten.bp.LocalDateTime
 import pocketbus.Bus
 import timber.log.Timber
@@ -13,7 +13,7 @@ class BluetoothListenerJob
 
     override fun onRunJob(params: Job.Params): Job.Result {
         Timber.d("BluetoothListenerJob executed")
-        bus.post(BluetoothConnectedEvent(BluetoothBroadcastReceiver.bluetoothConnection, LocalDateTime.now()))
+        bus.post(BluetoothConnectedEvent(PedalFasterController.bluetoothConnection, LocalDateTime.now()))
         return Job.Result.SUCCESS
     }
 
