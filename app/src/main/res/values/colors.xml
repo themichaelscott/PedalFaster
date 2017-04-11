@@ -6,6 +6,7 @@
     <color name="pedalfaster_white">#FFFFFF</color>
 
     <color name="app_theme_color">@color/colorPrimary</color>
+    <color name="transparent_gray_background">#1A000000</color>
 
     <!-- Toolbar -->
     <color name="toolbar_icon">@color/pedalfaster_white</color>

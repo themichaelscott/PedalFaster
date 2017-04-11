@@ -1,19 +1,16 @@
 package com.pedalfaster.launcher.job
 
 import com.evernote.android.job.Job
-import com.pedalfaster.launcher.event.BluetoothConnectedEvent
 import com.pedalfaster.launcher.receiver.PedalFasterController
-import org.threeten.bp.LocalDateTime
-import pocketbus.Bus
 import timber.log.Timber
 import javax.inject.Inject
 
 class BluetoothListenerJob
-@Inject constructor(private val bus: Bus) : Job() {
+@Inject constructor(private val pedalFasterController: PedalFasterController) : Job() {
 
     override fun onRunJob(params: Job.Params): Job.Result {
         Timber.d("BluetoothListenerJob executed")
-        bus.post(BluetoothConnectedEvent(PedalFasterController.bluetoothConnection, LocalDateTime.now()))
+        pedalFasterController.notifyOfBluetoothStatus()
         return Job.Result.SUCCESS
     }
 

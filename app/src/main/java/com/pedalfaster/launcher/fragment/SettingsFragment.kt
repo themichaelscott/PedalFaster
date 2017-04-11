@@ -17,6 +17,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var prefs: Prefs
+    @Inject
+    lateinit var pedalFasterController: PedalFasterController
 
     init {
         Injector.get().inject(this)
@@ -122,7 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     }
                     // if the device is different than prior, reset the connection
                     if (which != selectedPosition) {
-                        PedalFasterController.bluetoothConnection = false
+                        pedalFasterController.resetBluetoothStatus()
                     }
                     return@itemsCallbackSingleChoice true
                 }
