@@ -3,7 +3,6 @@ package com.pedalfaster.launcher.receiver
 import android.app.Application
 import android.content.Context.WINDOW_SERVICE
 import android.graphics.PixelFormat
-import android.view.View
 import android.view.WindowManager
 import com.pedalfaster.launcher.event.CheckBluetoothStatusEvent
 import com.pedalfaster.launcher.prefs.Prefs
@@ -20,14 +19,11 @@ import javax.inject.Singleton
 class PedalFasterController
 @Inject constructor(private val application: Application, private val prefs: Prefs, bus: Bus) {
 
-
-    // todo - change to property
     var showAlert = false
 
-    // todo - synchronize the map
     private var bluetoothStatusMap: MutableMap<String, BluetoothStatus> = mutableMapOf()
     private var windowManager: WindowManager = application.getSystemService(WINDOW_SERVICE) as WindowManager
-    private var pedalFasterView: View? = null
+    private val pedalFasterView = PedalFasterView(application)
 
     init {
         bus.register(this)
@@ -45,6 +41,7 @@ class PedalFasterController
         notifyOfBluetoothStatus()
     }
 
+    @Synchronized
     fun notifyOfBluetoothStatus() {
         when {
             getActiveDeviceStatus() == BluetoothStatus.CONNECTED -> dismissPedalFasterView()
@@ -57,17 +54,20 @@ class PedalFasterController
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT)
-        pedalFasterView = PedalFasterView(application)
-        windowManager.addView(pedalFasterView, windowManagerParams)
+        try {
+            windowManager.addView(pedalFasterView, windowManagerParams)
+        } catch (e: IllegalStateException) {
+            // todo - prevent this with concurrency checks
+            Timber.e(e, "View already added.  Continue running app...")
+        }
     }
 
     fun dismissPedalFasterView() {
-        if (pedalFasterView != null) {
-            try {
-                windowManager.removeView(pedalFasterView)
-            } catch (e: IllegalArgumentException) {
-                Timber.e(e, "View not attached?  Continue running app...")
-            }
+        try {
+            windowManager.removeView(pedalFasterView)
+        } catch (e: IllegalArgumentException) {
+            // todo - prevent this with concurrency checks
+            Timber.e(e, "View not attached?  Continue running app...")
         }
     }
 
