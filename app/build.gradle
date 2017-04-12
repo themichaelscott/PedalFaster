@@ -14,9 +14,32 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    // set dummy signing values if not defined in ~/.gradle/gradle.properties
+    if (!project.hasProperty('pedalfasterKeystore')) {
+        println "Using dummy signing values"
+        project.ext.setProperty('pedalfasterKeystore', 'dummy')
+        project.ext.setProperty('pedalfasterKeystorePassword', 'dummy')
+        project.ext.setProperty('pedalfasterKeyAlias', 'dummy')
+        project.ext.setProperty('pedalfasterKeyPassword', 'dummy')
+    }
+
+    // defined values in ~/.gradle/gradle.properties
+    signingConfigs {
+        prodConfig {
+            storeFile file(pedalfasterKeystore)
+            storePassword pedalfasterKeystorePassword
+            keyAlias pedalfasterKeyAlias
+            keyPassword pedalfasterKeyPassword
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.prodConfig
+        }
         release {
             // add build timestamps and other items here
+            signingConfig signingConfigs.prodConfig
         }
     }
 
