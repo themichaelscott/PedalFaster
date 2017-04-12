@@ -92,6 +92,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun onBluetoothPrefClick(): Boolean {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        // todo - this crashes on an emulator - bluetooth adapter is null - prompt user on the homeactivity that the app is unusable if they don't have bluetooth
         val bondedDevicesList = bluetoothAdapter.bondedDevices
         val deviceAddressList = bondedDevicesList.map { it.address }
         val deviceNameDisplayList = bondedDevicesList.map { "${it.name}\n${it.address}" }
