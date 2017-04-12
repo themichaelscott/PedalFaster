@@ -14,6 +14,9 @@ import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_home.*
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeActivity : FragmentActivity() {
@@ -32,7 +35,7 @@ class HomeActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        settingsButton.setOnLongClickListener { onSettingsButtonClick() }
+        settingsButton.setOnClickListener { onSettingsButtonClick() }
         youTubeButton.setOnClickListener { launchYouTube() }
     }
 
@@ -46,9 +49,36 @@ class HomeActivity : FragmentActivity() {
 
     @TargetApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == OVERLAY_PERMISSION_CODE) {
-            if (!Settings.canDrawOverlays(this)) {
+        when (requestCode) {
+            OVERLAY_PERMISSION_CODE -> if (!Settings.canDrawOverlays(this)) {
                 getOverlayPermission()
+            }
+            PinActivity.REQUEST_CODE -> {
+                when (resultCode) {
+                    PinActivity.SUCCESS -> {
+                        Timber.d("PIN Success - launching PreferenceActivity")
+                        val settingIntent = Intent(this, PreferenceActivity::class.java)
+                        startActivity(settingIntent)
+                    }
+                    PinActivity.FAIL -> {
+                        Timber.d("PIN FAILED")
+                        prefs.pinLockExpiration = LocalDateTime.now()
+                                .plusMinutes(Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES)
+                                .atZone(ZoneId.systemDefault())
+                                .toInstant()
+                                .toEpochMilli()
+
+                        MaterialDialog.Builder(this)
+                                .title("Preferences Locked")
+                                .content("You have been locked out of preferences for ${Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES} minutes.")
+                                .positiveText("OK")
+                                .build()
+                                .show()
+                    }
+                    else -> {
+                        // do nothing
+                    }
+                }
             }
         }
     }
@@ -90,10 +120,18 @@ class HomeActivity : FragmentActivity() {
         pedalFasterController.showAlert = true
     }
 
-    fun onSettingsButtonClick(): Boolean {
-        val settingIntent = Intent(this, PreferenceActivity::class.java)
-        startActivity(settingIntent)
-        return true
+    fun onSettingsButtonClick() {
+        if (System.currentTimeMillis() > prefs.pinLockExpiration) {
+            val intent = Intent(this, PinActivity::class.java)
+            startActivityForResult(intent, PinActivity.REQUEST_CODE)
+        } else {
+            MaterialDialog.Builder(this)
+                    .title("Preferences Locked")
+                    .content("You have exceeded the maximum number of pin attempts. Please try again later.")
+                    .positiveText("OK")
+                    .build()
+                    .show()
+        }
     }
 
     override fun onBackPressed() {

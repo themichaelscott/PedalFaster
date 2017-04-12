@@ -88,6 +88,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.jakewharton.rxbinding:rxbinding:1.0.1'
 
+    compile 'com.andrognito.pinlockview:pinlockview:2.0.1'
+
     // Test
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.3-alpha') {
         exclude module: 'jsr305'

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/pinMessageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/indicatorDots"
+        app:layout_constraintLeft_toLeftOf="@+id/indicatorDots"
+        app:layout_constraintRight_toRightOf="@+id/indicatorDots"
+        tools:text="Create PIN"
+        />
+
+    <com.andrognito.pinlockview.IndicatorDots
+        android:id="@+id/indicatorDots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="24dp"
+        app:dotDiameter="24dp"
+        app:dotEmptyBackground="@drawable/circle_filled"
+        app:dotFilledBackground="@drawable/circle_filled_accent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintLeft_toLeftOf="@+id/pinLockView"
+        app:layout_constraintRight_toRightOf="@+id/pinLockView"
+        />
+
+    <com.andrognito.pinlockview.PinLockView
+        android:id="@+id/pinLockView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:keypadButtonSize="60dp"
+        app:keypadShowDeleteButton="true"
+        app:keypadTextColor="@color/colorPrimary"
+        app:keypadTextSize="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:pinLength="4"
+        app:keypadDeleteButtonPressedColor="#C8C8C8"
+    />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.34"/>
+
+</android.support.constraint.ConstraintLayout>
