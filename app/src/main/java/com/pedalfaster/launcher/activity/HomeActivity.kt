@@ -16,7 +16,6 @@ import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
-
 class HomeActivity : FragmentActivity() {
 
     @Inject
@@ -41,7 +40,8 @@ class HomeActivity : FragmentActivity() {
         super.onResume()
         // kill existing pedalFasterView if it exists
         pedalFasterController.dismissPedalFasterView()
-        pedalFasterController.showAlert = false
+        pedalFasterController.showAlert = false // sets flag to turn off pedal faster alerts (until youtube is launched again)
+        scheduler.cancelBluetoothListenerJob()
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -84,7 +84,8 @@ class HomeActivity : FragmentActivity() {
             return
         }
         scheduler.schedulePedalFasterInterruptor()
-        val launchYouTubeIntent = packageManager.getLaunchIntentForPackage("com.google.android.youtube")
+        val launchYouTubeIntent = packageManager.getLaunchIntentForPackage(YOUTUBE_PACKAGE)
+        launchYouTubeIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         startActivity(launchYouTubeIntent)
         pedalFasterController.showAlert = true
     }
@@ -101,6 +102,7 @@ class HomeActivity : FragmentActivity() {
 
     companion object {
         val OVERLAY_PERMISSION_CODE = 2017
+        val YOUTUBE_PACKAGE = "com.google.android.youtube"
     }
 
 }

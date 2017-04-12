@@ -21,6 +21,7 @@
             android:label="Pedal Faster Launcher"
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
             >
             <intent-filter>
@@ -31,7 +32,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.PreferenceActivity"/>
+        <activity android:name=".activity.PreferenceActivity"
+                  android:excludeFromRecents="true"
+            />
 
     </application>
 

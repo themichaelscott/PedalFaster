@@ -40,16 +40,16 @@ class PedalFasterController
         }
     }
 
+    @Subscribe(ThreadMode.MAIN)
+    fun handle(event: CheckBluetoothStatusEvent) {
+        notifyOfBluetoothStatus()
+    }
+
     fun notifyOfBluetoothStatus() {
         when {
             getActiveDeviceStatus() == BluetoothStatus.CONNECTED -> dismissPedalFasterView()
             showAlert -> showPedalFasterView()
         }
-    }
-
-    @Subscribe(ThreadMode.MAIN)
-    fun handle(event: CheckBluetoothStatusEvent) {
-        showPedalFasterView()
     }
 
     private fun showPedalFasterView() {
@@ -66,7 +66,7 @@ class PedalFasterController
             try {
                 windowManager.removeView(pedalFasterView)
             } catch (e: IllegalArgumentException) {
-                Timber.e(e, "View not attached?  Continue running app")
+                Timber.e(e, "View not attached?  Continue running app...")
             }
         }
     }
