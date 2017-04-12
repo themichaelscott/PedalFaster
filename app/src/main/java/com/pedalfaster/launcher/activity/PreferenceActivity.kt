@@ -11,8 +11,7 @@ class PreferenceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preference)
 
-//        setSupportActionBar(toolbar)
-        title = "Settings"
+        title = getString(R.string.prefs_title)
 
         val actionBar = supportActionBar
         if (actionBar != null) {

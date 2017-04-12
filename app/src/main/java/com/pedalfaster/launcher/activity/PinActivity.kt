@@ -42,9 +42,9 @@ class PinActivity : AppCompatActivity() {
         pinLockView.setPinLockListener(pinLockListener)
         indicatorDots.indicatorType = IndicatorDots.IndicatorType.FIXED
         if (prefs.pin.isBlank()) {
-            updateMessage("Create PIN")
+            updateMessage(getString(R.string.pin_create))
         } else {
-            updateMessage("Enter PIN")
+            updateMessage(getString(R.string.pin_enter))
         }
     }
 
@@ -69,17 +69,17 @@ class PinActivity : AppCompatActivity() {
                 when {
                     prefs.pin == pin -> {
                         Timber.d("PIN success")
-                        updateMessage("Success")
+                        updateMessage(getString(R.string.pin_success))
                         setResult(SUCCESS)
                         finish()
                     }
                     attemptsRemaining > 0 -> {
                         Timber.d("PIN fail")
-                        updateMessage("Please try again")
+                        updateMessage(getString(R.string.pin_fail))
                     }
                     else -> {
                         Timber.d("Too many tries")
-                        updateMessage("You have exceeded the maximum number of attempts")
+                        updateMessage(getString(R.string.pin_max_attempts_exceeded))
                         setResult(FAIL)
                         finish()
                     }
@@ -88,19 +88,19 @@ class PinActivity : AppCompatActivity() {
             newPin.isBlank() -> {
                 newPin = pin
                 Timber.d("PIN1 saved")
-                updateMessage("Reenter PIN")
+                updateMessage(getString(R.string.pin_reenter))
             }
             newPin == pin -> {
                 // saves the PIN
                 Timber.d("new pin saved")
                 prefs.pin = pin
-                updateMessage("PIN Accepted")
+                updateMessage(getString(R.string.pin_accepted))
                 setResult(SUCCESS)
                 finish()
             }
             else -> {
                 Timber.d("pins didn't match")
-                updateMessage("Your PINs did not match, please try again.\nCreate PIN")
+                updateMessage(getString(R.string.pin_setup_no_match))
                 newPin = "" // clears the pin
             }
         }

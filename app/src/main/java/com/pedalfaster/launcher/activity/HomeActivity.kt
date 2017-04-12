@@ -69,9 +69,9 @@ class HomeActivity : FragmentActivity() {
                                 .toEpochMilli()
 
                         MaterialDialog.Builder(this)
-                                .title("Preferences Locked")
-                                .content("You have been locked out of preferences for ${Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES} minutes.")
-                                .positiveText("OK")
+                                .title(getString(R.string.prefs_locked_title))
+                                .content(getString(R.string.prefs_locked_message, Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES))
+                                .positiveText(getString(R.string.ok))
                                 .build()
                                 .show()
                     }
@@ -87,9 +87,9 @@ class HomeActivity : FragmentActivity() {
     fun getOverlayPermission() {
         if (!Settings.canDrawOverlays(this)) {
             MaterialDialog.Builder(this)
-                    .title("Permission Required")
-                    .content("Pedal Faster needs permission to interrupt video playback on your device.")
-                    .positiveText("OK")
+                    .title(R.string.permission_required_title)
+                    .content(R.string.permission_required_overlay_message)
+                    .positiveText(R.string.ok)
                     .onPositive { _, _ ->
                         val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName))
                         startActivityForResult(intent, OVERLAY_PERMISSION_CODE)
@@ -106,9 +106,9 @@ class HomeActivity : FragmentActivity() {
         }
         if (prefs.keepPedalingEnabled && prefs.activeBluetoothDeviceAddress.isBlank()) {
             MaterialDialog.Builder(this)
-                    .title("Unable to open YouTube")
-                    .content("Apps can't be launched until there is a bluetooth device selected.\nPlease open \"Settings\" to select a device.")
-                    .positiveText("OK")
+                    .title(R.string.bluetooth_required_title)
+                    .content(R.string.bluetooth_required_message)
+                    .positiveText(R.string.ok)
                     .build()
                     .show()
             return
@@ -126,9 +126,9 @@ class HomeActivity : FragmentActivity() {
             startActivityForResult(intent, PinActivity.REQUEST_CODE)
         } else {
             MaterialDialog.Builder(this)
-                    .title("Preferences Locked")
-                    .content("You have exceeded the maximum number of pin attempts. Please try again later.")
-                    .positiveText("OK")
+                    .title(R.string.prefs_locked_title)
+                    .content(R.string.prefs_locked_message_try_again)
+                    .positiveText(R.string.ok)
                     .build()
                     .show()
         }

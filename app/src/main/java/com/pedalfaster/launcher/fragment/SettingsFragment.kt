@@ -74,9 +74,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun onStartupDelayPrefClick(): Boolean {
         MaterialDialog.Builder(context)
-                .title("Startup Delay")
+                .title(getString(R.string.prefs_startup_delay_title))
                 .inputType(InputType.TYPE_CLASS_NUMBER)
-                .input("Seconds to wait", prefs.startupDelayBeforePrompt.toString(), false) { _, input ->
+                .input(getString(R.string.prefs_startup_delay_coaching_message), prefs.startupDelayBeforePrompt.toString(), false) { _, input ->
                     prefs.startupDelayBeforePrompt = input.toString().toLong()
                     updateStartupDelaySummary()
                 }
@@ -86,7 +86,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun updateStartupDelaySummary(): Boolean {
         val startupDelayPref = findPreference(Prefs.PREF_STARTUP_DELAY_BEFORE_PROMPT)
-        startupDelayPref?.summary = "Wait ${prefs.startupDelayBeforePrompt} seconds for pedaling once YouTube starts"
+        startupDelayPref?.summary = getString(R.string.prefs_startup_delay_message, prefs.startupDelayBeforePrompt)
         return true
     }
 
@@ -98,9 +98,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         if (deviceNameDisplayList.isEmpty()) {
             MaterialDialog.Builder(context)
-                    .title("No Bluetooth Devices Available")
-                    .content("Please pair a bluetooth device and try again")
-                    .positiveText("OK")
+                    .title(getString(R.string.prefs_no_bluetooth_devices_title))
+                    .content(getString(R.string.prefs_no_bluetooth_devices_message))
+                    .positiveText(R.string.ok)
                     .build()
                     .show()
             return true
@@ -115,7 +115,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         MaterialDialog.Builder(context)
-                .title("Bluetooth Devices")
+                .title(getString(R.string.prefs_bluetooth_devices_title))
                 .items(deviceNameDisplayList)
                 .itemsCallbackSingleChoice(selectedPosition) { _, _, which, _ ->
                     if (which >= 0 && which < deviceAddressList.size) {
@@ -124,7 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     }
                     return@itemsCallbackSingleChoice true
                 }
-                .positiveText("OK")
+                .positiveText(R.string.ok)
                 .show()
         return true
     }
@@ -133,7 +133,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val bluetoothDevicePref = findPreference(Prefs.PREF_BLUETOOTH_DEVICE_ADDRESS)
         val bluetoothAddress = prefs.activeBluetoothDeviceAddress
         if (bluetoothAddress.isBlank() || !BluetoothAdapter.checkBluetoothAddress(bluetoothAddress)) {
-            bluetoothDevicePref?.summary = "Choose a device"
+            bluetoothDevicePref?.summary = getString(R.string.prefs_selected_bluetooth_empty)
         } else {
             val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
             val bluetoothDevice = bluetoothAdapter.getRemoteDevice(bluetoothAddress)

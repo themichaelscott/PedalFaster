@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="0dp"
-        android:contentDescription="@string/pedal_faster"
+        android:contentDescription="@string/app_name"
         android:tint="@color/pedalfaster_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/leftGuideline"
