@@ -11,19 +11,19 @@ import javax.inject.Inject
 class Scheduler
 @Inject constructor(val prefs: Prefs) {
 
-    fun schedulePedalFasterInterruptor() {
+    fun schedulePedalFasterInterrupter() {
         val startupWindow: Long = TimeUnit.SECONDS.toMillis(prefs.startupDelayBeforePrompt)
         val startupWindowBuffer = startupWindow + STARTUP_WINDOW_BUFFER_MS
-        JobRequest.Builder(BluetoothListenerJob.TAG)
+        JobRequest.Builder(DelayedBluetoothCheckJob.TAG)
                 .setUpdateCurrent(true) // if an app is launched again, this will restart the counter for the bluetooth to start
                 .setExecutionWindow(startupWindow, startupWindowBuffer)
                 .build()
                 .schedule()
     }
 
-    fun cancelBluetoothListenerJob() {
+    fun cancelPedalFasterInterrupter() {
         Timber.d("Bluetooth job cancel requested")
-        val canceledJobs = JobManager.instance().cancelAllForTag(BluetoothListenerJob.TAG)
+        val canceledJobs = JobManager.instance().cancelAllForTag(DelayedBluetoothCheckJob.TAG)
         Timber.d("Bluetooth jobs cancelled: $canceledJobs")
     }
 

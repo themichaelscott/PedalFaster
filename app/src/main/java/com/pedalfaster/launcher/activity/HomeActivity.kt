@@ -44,7 +44,14 @@ class HomeActivity : FragmentActivity() {
         // kill existing pedalFasterView if it exists
         pedalFasterController.dismissPedalFasterView()
         pedalFasterController.showAlert = false // sets flag to turn off pedal faster alerts (until youtube is launched again)
-        scheduler.cancelBluetoothListenerJob()
+        scheduler.cancelPedalFasterInterrupter()
+    }
+
+    override fun onPause() {
+        // any time we navigate from the launcher, we will interrupt
+        scheduler.schedulePedalFasterInterrupter()
+        pedalFasterController.showAlert = true
+        super.onPause()
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -113,11 +120,10 @@ class HomeActivity : FragmentActivity() {
                     .show()
             return
         }
-        scheduler.schedulePedalFasterInterruptor()
+        // TODO - exclude from recents isn't working as expected on a v21 device - works find on a 7.x
         val launchYouTubeIntent = packageManager.getLaunchIntentForPackage(YOUTUBE_PACKAGE)
         launchYouTubeIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         startActivity(launchYouTubeIntent)
-        pedalFasterController.showAlert = true
     }
 
     fun onSettingsButtonClick() {

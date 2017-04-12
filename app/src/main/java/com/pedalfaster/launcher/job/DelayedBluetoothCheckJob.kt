@@ -6,16 +6,16 @@ import pocketbus.Bus
 import timber.log.Timber
 import javax.inject.Inject
 
-class BluetoothListenerJob
+class DelayedBluetoothCheckJob
 @Inject constructor(private val bus: Bus) : Job() {
 
     override fun onRunJob(params: Job.Params): Job.Result {
-        Timber.d("BluetoothListenerJob executed")
+        Timber.d("DelayedBluetoothCheckJob executed")
         bus.post(CheckBluetoothStatusEvent())
         return Job.Result.SUCCESS
     }
 
     companion object {
-        val TAG = "BluetoothListenerJob"
+        val TAG = "DelayedBluetoothCheckJob"
     }
 }

@@ -19,7 +19,7 @@ import javax.inject.Singleton
 class PedalFasterController
 @Inject constructor(private val application: Application, private val prefs: Prefs, bus: Bus) {
 
-    var showAlert = false
+    var showAlert = true
 
     private var bluetoothStatusMap: MutableMap<String, BluetoothStatus> = mutableMapOf()
     private var windowManager: WindowManager = application.getSystemService(WINDOW_SERVICE) as WindowManager
