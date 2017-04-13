@@ -58,7 +58,7 @@ class PedalFasterController
             windowManager.addView(pedalFasterView, windowManagerParams)
         } catch (e: IllegalStateException) {
             // todo - prevent this with concurrency checks
-            Timber.e(e, "View already added.  Continue running app...")
+//            Timber.e("View already added.  Continue running app...")
         }
     }
 
@@ -67,7 +67,7 @@ class PedalFasterController
             windowManager.removeView(pedalFasterView)
         } catch (e: IllegalArgumentException) {
             // todo - prevent this with concurrency checks
-            Timber.e(e, "View not attached?  Continue running app...")
+//            Timber.e("View not attached?  Continue running app...")
         }
     }
 
