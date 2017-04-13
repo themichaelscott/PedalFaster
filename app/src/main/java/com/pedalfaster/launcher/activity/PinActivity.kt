@@ -7,7 +7,9 @@ import com.andrognito.pinlockview.IndicatorDots
 import com.andrognito.pinlockview.PinLockListener
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
+import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.prefs.Prefs
+import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_pin.*
 import pocketknife.PocketKnife
 import pocketknife.SaveState
@@ -18,6 +20,10 @@ class PinActivity : AppCompatActivity() {
 
     @Inject
     lateinit var prefs: Prefs
+    @Inject
+    lateinit var pedalFasterController:PedalFasterController
+    @Inject
+    lateinit var scheduler: Scheduler
 
     @SaveState
     var newPin = ""
@@ -46,6 +52,18 @@ class PinActivity : AppCompatActivity() {
         } else {
             updateMessage(getString(R.string.pin_enter))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        scheduler.cancelPedalFasterInterrupter()
+        pedalFasterController.showAlert = false
+    }
+
+    override fun onPause() {
+        scheduler.schedulePedalFasterInterrupter()
+        pedalFasterController.showAlert = true
+        super.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

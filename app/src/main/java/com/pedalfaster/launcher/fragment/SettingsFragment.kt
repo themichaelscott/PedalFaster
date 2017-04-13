@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
+import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import timber.log.Timber
@@ -19,6 +20,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     lateinit var prefs: Prefs
     @Inject
     lateinit var pedalFasterController: PedalFasterController
+    @Inject
+    lateinit var scheduler: Scheduler
 
     init {
         Injector.get().inject(this)
@@ -40,9 +43,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
+        scheduler.cancelPedalFasterInterrupter()
+        pedalFasterController.showAlert = false
     }
 
     override fun onPause() {
+        scheduler.schedulePedalFasterInterrupter()
+        pedalFasterController.showAlert = true
         super.onPause()
     }
 
