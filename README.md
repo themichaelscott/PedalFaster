@@ -6,4 +6,4 @@ For more information, please visit the [pedal faster](https://sites.google.com/v
 # Download
 You don't need a recumbent bike to try pedal faster.  It can be paired with any Bluetooth device to act as the controller.
 
-Give it a try!  [Download](https://github.com/themichaelscott/pedalfaster/blob/master/release/app-release.apk) the apk
+Give it a try!  [Download](https://github.com/themichaelscott/pedalfaster/raw/master/release/app-release.apk) the apk
