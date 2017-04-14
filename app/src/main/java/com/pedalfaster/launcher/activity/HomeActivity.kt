@@ -120,6 +120,14 @@ class HomeActivity : FragmentActivity() {
                     .show()
             return
         }
+        if (!pedalFasterController.isPedalFasterTheDefaultLauncher()) {
+            MaterialDialog.Builder(this)
+                    .content(getString(R.string.required_to_be_default_launcher_message))
+                    .positiveText(R.string.ok)
+                    .build()
+                    .show()
+            return
+        }
         // TODO - exclude from recents isn't working as expected on a v21 device - works find on a 7.x
         val launchYouTubeIntent = packageManager.getLaunchIntentForPackage(YOUTUBE_PACKAGE)
         launchYouTubeIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)

@@ -81,7 +81,7 @@ class PedalFasterController
         return bluetoothStatus
     }
 
-    private fun isPedalFasterTheDefaultLauncher(): Boolean {
+    public fun isPedalFasterTheDefaultLauncher(): Boolean {
         val packageManager = application.packageManager
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)

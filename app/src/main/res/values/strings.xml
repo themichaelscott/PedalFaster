@@ -11,6 +11,8 @@
     <string name="bluetooth_required_title">Unable to open YouTube</string>
     <string name="bluetooth_required_message">Apps can\'t be launched until there is a bluetooth device selected.\nPlease open \"Settings\" to select a device.</string>
 
+    <string name="required_to_be_default_launcher_message">Pedal Faster must be set as the default home launcher to work.  Please update in settings.</string>
+
     <string name="pin_create">Create PIN</string>
     <string name="pin_enter">Enter PIN</string>
     <string name="pin_success">Success</string>
