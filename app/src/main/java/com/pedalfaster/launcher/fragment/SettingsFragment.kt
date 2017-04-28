@@ -1,17 +1,18 @@
 package com.pedalfaster.launcher.fragment
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.text.InputType
 import android.view.MenuItem
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
+import com.pedalfaster.launcher.ux.app.enabled.EnabledAppsActivity
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -141,7 +142,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun onEnabledAppsClicked(): Boolean {
-        Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
+        val settingIntent = Intent(context, EnabledAppsActivity::class.java)
+        startActivity(settingIntent)
         return true
     }
 
