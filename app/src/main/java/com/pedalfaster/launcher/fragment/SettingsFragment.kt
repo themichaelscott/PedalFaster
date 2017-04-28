@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.text.InputType
 import android.view.MenuItem
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
@@ -77,6 +78,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference(Prefs.PREF_BLUETOOTH_DEVICE_ADDRESS)?.setOnPreferenceClickListener { onBluetoothPrefClick() }
         updateBluetoothDeviceSummary()
 
+        findPreference(Prefs.PREF_ENABLED_APPS)?.setOnPreferenceClickListener { onEnabledAppsClicked() }
+
     }
 
     private fun onStartupDelayPrefClick(): Boolean {
@@ -134,6 +137,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 .positiveText(R.string.ok)
                 .show()
+        return true
+    }
+
+    private fun onEnabledAppsClicked(): Boolean {
+        Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
         return true
     }
 
