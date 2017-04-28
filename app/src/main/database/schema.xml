@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbSchema
+    xmlns='https://github.com/jeffdcamp/dbtools-gen'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:schemaLocation='https://github.com/jeffdcamp/dbtools-gen dbschema.xsd'>
+    <database name="main">
+        <table name="PEDALFASTER_APP" fieldsDefaultNotNull="true">
+            <field name="_id" increment="true" jdbcDataType="BIGINT" notNull="true" primaryKey="true"/>
+            <field name="APP_NAME" jdbcDataType="VARCHAR" notNull="true" size="255"/>
+            <field name="APP_PATH" jdbcDataType="VARCHAR" notNull="true" size="255"/>
+            <field name="ENABLED" jdbcDataType="BOOLEAN"/>
+        </table>
+    </database>
+</dbSchema>

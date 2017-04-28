@@ -1,5 +1,21 @@
 apply plugin: 'com.android.application'
 
+buildscript {
+
+//    ext.kotlin_version = '1.1.1'
+    ext.dbtoolsVersion = '8.2.1'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath "org.dbtools:gradle-dbtools-plugin:$dbtoolsVersion"
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -54,11 +70,11 @@ android {
 
 }
 
-apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.ben-manes.versions' // ./gradlew dependencyUpdates -Drevision=release
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'dbtools'
 
 kapt {
     generateStubs = true
@@ -113,6 +129,8 @@ dependencies {
 
     compile 'com.andrognito.pinlockview:pinlockview:2.0.1'
 
+    compile "org.dbtools:dbtools-android:$dbtoolsVersion"
+
     // Test
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.3-alpha') {
         exclude module: 'jsr305'
@@ -133,6 +151,14 @@ dependencies {
     kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 }
 
-repositories {
-    mavenCentral()
+dbtools {
+    type 'ANDROID-KOTLIN'
+
+    basePackageName 'com.pedalfaster.launcher.domain'
+    outputSrcDir 'src/main/java/com/pedalfaster/launcher/domain'
+    injectionSupport true
+    jsr305Support true
+    includeDatabaseNameInPackage false
+    dateType 'JODA'
+    rxJavaSupport false
 }
