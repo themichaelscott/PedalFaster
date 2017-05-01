@@ -7,7 +7,7 @@
         <table name="PEDALFASTER_APP" fieldsDefaultNotNull="true">
             <field name="_id" increment="true" jdbcDataType="BIGINT" notNull="true" primaryKey="true"/>
             <field name="APP_NAME" jdbcDataType="VARCHAR" notNull="true" size="255"/>
-            <field name="APP_PATH" jdbcDataType="VARCHAR" notNull="true" size="255"/>
+            <field name="PACKAGE_NAME" jdbcDataType="VARCHAR" notNull="true" size="255"/>
             <field name="ENABLED" jdbcDataType="BOOLEAN"/>
         </table>
     </database>

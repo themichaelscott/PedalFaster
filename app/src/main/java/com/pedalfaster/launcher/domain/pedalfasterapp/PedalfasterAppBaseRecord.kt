@@ -22,7 +22,7 @@ abstract class PedalfasterAppBaseRecord  : AndroidBaseRecord {
 
      open var id: Long = 0
      open var appName: String = ""
-     open var appPath: String = ""
+     open var packageName: String = ""
      open var enabled: Boolean = false
 
     constructor() {
@@ -50,7 +50,7 @@ abstract class PedalfasterAppBaseRecord  : AndroidBaseRecord {
 
     override fun getContentValues(values: DBToolsContentValues<*>) {
         values.put(PedalfasterAppConst.C_APP_NAME, appName)
-        values.put(PedalfasterAppConst.C_APP_PATH, appPath)
+        values.put(PedalfasterAppConst.C_PACKAGE_NAME, packageName)
         values.put(PedalfasterAppConst.C_ENABLED, if (enabled) 1L else 0L)
     }
 
@@ -58,7 +58,7 @@ abstract class PedalfasterAppBaseRecord  : AndroidBaseRecord {
         return arrayOf(
             id,
             appName,
-            appPath,
+            packageName,
             if (enabled) 1L else 0L)
     }
 
@@ -66,7 +66,7 @@ abstract class PedalfasterAppBaseRecord  : AndroidBaseRecord {
         val copy = PedalfasterApp()
         copy.id = id
         copy.appName = appName
-        copy.appPath = appPath
+        copy.packageName = packageName
         copy.enabled = enabled
         return copy
     }
@@ -74,28 +74,28 @@ abstract class PedalfasterAppBaseRecord  : AndroidBaseRecord {
     @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
     override fun bindInsertStatement(statement: StatementWrapper) {
         statement.bindString(1, appName)
-        statement.bindString(2, appPath)
+        statement.bindString(2, packageName)
         statement.bindLong(3, if (enabled) 1L else 0L)
     }
 
     @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
     override fun bindUpdateStatement(statement: StatementWrapper) {
         statement.bindString(1, appName)
-        statement.bindString(2, appPath)
+        statement.bindString(2, packageName)
         statement.bindLong(3, if (enabled) 1L else 0L)
         statement.bindLong(4, id)
     }
 
     override fun setContent(values: DBToolsContentValues<*>) {
         appName = values.getAsString(PedalfasterAppConst.C_APP_NAME)
-        appPath = values.getAsString(PedalfasterAppConst.C_APP_PATH)
+        packageName = values.getAsString(PedalfasterAppConst.C_PACKAGE_NAME)
         enabled = values.getAsBoolean(PedalfasterAppConst.C_ENABLED)
     }
 
     override fun setContent(cursor: Cursor) {
         id = cursor.getLong(cursor.getColumnIndexOrThrow(PedalfasterAppConst.C_ID))
         appName = cursor.getString(cursor.getColumnIndexOrThrow(PedalfasterAppConst.C_APP_NAME))
-        appPath = cursor.getString(cursor.getColumnIndexOrThrow(PedalfasterAppConst.C_APP_PATH))
+        packageName = cursor.getString(cursor.getColumnIndexOrThrow(PedalfasterAppConst.C_PACKAGE_NAME))
         enabled = cursor.getInt(cursor.getColumnIndexOrThrow(PedalfasterAppConst.C_ENABLED)) != 0
     }
 
