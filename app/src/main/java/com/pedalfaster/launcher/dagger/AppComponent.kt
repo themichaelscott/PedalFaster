@@ -4,6 +4,7 @@ import android.app.Application
 import com.pedalfaster.launcher.App
 import com.pedalfaster.launcher.activity.HomeActivity
 import com.pedalfaster.launcher.activity.PinActivity
+import com.pedalfaster.launcher.adapter.EnabledAppsAdapter
 import com.pedalfaster.launcher.fragment.SettingsFragment
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import com.pedalfaster.launcher.ux.app.enabled.EnabledAppsActivity
@@ -20,4 +21,5 @@ interface AppComponent {
     fun inject(target: PedalFasterController)
     fun inject(target: PinActivity)
     fun inject(target: EnabledAppsActivity)
+    fun inject(target: EnabledAppsAdapter)
 }

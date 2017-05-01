@@ -5,12 +5,15 @@ import android.content.pm.ActivityInfo
 import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.domain.pedalfasterapp.PedalfasterApp
 import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.receiver.PedalFasterController
+import kotlinx.android.synthetic.main.activity_enabled_apps.*
+import com.pedalfaster.launcher.adapter.EnabledAppsAdapter
 import javax.inject.Inject
 
 
@@ -23,6 +26,8 @@ class EnabledAppsActivity : AppCompatActivity(), EnabledAppsContract.View {
     @Inject
     lateinit var pedalFasterController: PedalFasterController
 
+    lateinit var adapter: EnabledAppsAdapter
+
     init {
         Injector.get().inject(this)
     }
@@ -30,27 +35,43 @@ class EnabledAppsActivity : AppCompatActivity(), EnabledAppsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enabled_apps)
+        setupRecyclerView()
         enabledAppsPresenter.init(this)
-        enabledAppsPresenter.loadData(getAvailableApps())
     }
 
     override fun onStart() {
         super.onStart()
         enabledAppsPresenter.register()
-        pedalFasterController.showAlert = false // sets flag to turn off pedal faster alerts (until youtube is launched again)
+        pedalFasterController.showAlert = false
         scheduler.cancelPedalFasterInterrupter()
+        enabledAppsPresenter.loadData(getAvailableApps())
     }
 
     override fun onStop() {
         enabledAppsPresenter.unregister()
+        pedalFasterController.showAlert = true
+        scheduler.schedulePedalFasterInterrupter()
         super.onStop()
     }
 
     override fun showData(appList: List<PedalfasterApp>) {
+        adapter.list = appList.toMutableList()
         Toast.makeText(this, "Show Data", Toast.LENGTH_SHORT).show()
     }
 
-    fun getAvailableApps(): List<PedalfasterApp> {
+    private fun setupRecyclerView() {
+        adapter = EnabledAppsAdapter().apply {
+            itemClickListener = { enabledAppsPresenter.onClick(it) }
+        }
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onClick(pedalfasterApp: PedalfasterApp) {
+        Toast.makeText(this, pedalfasterApp.appName, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getAvailableApps(): List<PedalfasterApp> {
         val mainIntent = Intent(Intent.ACTION_MAIN, null)
                 .apply { addCategory(Intent.CATEGORY_LAUNCHER) }
         val resolveInfoList: MutableList<ResolveInfo> = packageManager.queryIntentActivities(mainIntent, 0)
@@ -59,7 +80,7 @@ class EnabledAppsActivity : AppCompatActivity(), EnabledAppsContract.View {
                 .sortedBy { it.appName }
     }
 
-    fun buildAppInfo(activityInfo: ActivityInfo): PedalfasterApp {
+    private fun buildAppInfo(activityInfo: ActivityInfo): PedalfasterApp {
         return PedalfasterApp()
                 .apply {
                     appName = activityInfo.loadLabel(packageManager).toString()
