@@ -8,12 +8,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.pedalfaster.launcher.R
+import com.pedalfaster.launcher.adapter.EnabledAppsAdapter
 import com.pedalfaster.launcher.dagger.Injector
 import com.pedalfaster.launcher.domain.pedalfasterapp.PedalfasterApp
 import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_enabled_apps.*
-import com.pedalfaster.launcher.adapter.EnabledAppsAdapter
 import javax.inject.Inject
 
 
@@ -61,14 +61,14 @@ class EnabledAppsActivity : AppCompatActivity(), EnabledAppsContract.View {
 
     private fun setupRecyclerView() {
         adapter = EnabledAppsAdapter().apply {
-            itemClickListener = { enabledAppsPresenter.onClick(it) }
+            itemClickListener = { app, enabled -> enabledAppsPresenter.onClick(app, enabled) }
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    override fun onClick(pedalfasterApp: PedalfasterApp) {
-        Toast.makeText(this, pedalfasterApp.appName, Toast.LENGTH_SHORT).show()
+    override fun onClick(pedalfasterApp: PedalfasterApp, enabled: Boolean) {
+        Toast.makeText(this, "${pedalfasterApp.appName}, enabled: $enabled", Toast.LENGTH_SHORT).show()
     }
 
     private fun getAvailableApps(): List<PedalfasterApp> {

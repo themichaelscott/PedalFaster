@@ -15,7 +15,7 @@ class EnabledAppsAdapter : RecyclerView.Adapter<EnabledAppsAdapter.ViewHolder>()
         Injector.get().inject(this)
     }
 
-    var itemClickListener: (PedalfasterApp) -> Unit = {}
+    var itemClickListener: (PedalfasterApp, Boolean) -> Unit = { _, _ ->}
 
     var list: MutableList<PedalfasterApp> = arrayListOf()
         set(value) {
@@ -29,7 +29,7 @@ class EnabledAppsAdapter : RecyclerView.Adapter<EnabledAppsAdapter.ViewHolder>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent).apply {
-            clickListener = { itemClickListener(list[it.adapterPosition]) }
+            itemClickListener = { viewHolder, isSelected -> itemClickListener(list[viewHolder.adapterPosition], isSelected) }
         }
     }
 
@@ -43,14 +43,14 @@ class EnabledAppsAdapter : RecyclerView.Adapter<EnabledAppsAdapter.ViewHolder>()
         val appNameTextView: TextView = itemView.appNameTextView
 
         init {
-            itemView.setOnClickListener { clickListener(this) }
-//            starUnitImageButton.setOnClickListener {
-//                it.isSelected = !it.isSelected
-//                starClickListener(this, it.isSelected)
-//            }
+            itemView.setOnClickListener {
+                it.isSelected = !it.isSelected
+                itemClickListener(this, it.isSelected)
+            }
         }
 
-        var clickListener: (ViewHolder) -> Unit = {}
+        var itemClickListener: (ViewHolder, Boolean) -> Unit = { _, _ ->}
+
     }
 
 }

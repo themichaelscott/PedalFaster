@@ -34,8 +34,8 @@ class EnabledAppsPresenter
         Timber.d("Size: ${pedalfasterAppList.size}")
     }
 
-    fun onClick(pedalfasterApp: PedalfasterApp) {
-        view.onClick(pedalfasterApp)
+    fun onClick(pedalfasterApp: PedalfasterApp, enabled: Boolean) {
+        view.onClick(pedalfasterApp, enabled)
     }
 
 }
