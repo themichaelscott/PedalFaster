@@ -3,6 +3,8 @@ package com.pedalfaster.launcher.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
@@ -36,16 +38,19 @@ class EnabledAppsAdapter : RecyclerView.Adapter<EnabledAppsAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.appNameTextView.text = item.appName
+        holder.appIconImageView.setImageDrawable(item.icon)
     }
 
     class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_pedalfaster_app, parent, false)) {
 
         val appNameTextView: TextView = itemView.appNameTextView
+        val appIconImageView: ImageView = itemView.appIconImageView
+        val appSelectedCheckbox: CheckBox = itemView.appSelectedCheckBox
 
         init {
             itemView.setOnClickListener {
-                it.isSelected = !it.isSelected
-                itemClickListener(this, it.isSelected)
+                appSelectedCheckbox.isChecked = !appSelectedCheckbox.isChecked
+                itemClickListener(this, appSelectedCheckbox.isChecked)
             }
         }
 
