@@ -5,6 +5,5 @@ import com.pedalfaster.launcher.domain.pedalfasterapp.PedalfasterApp
 class EnabledAppsContract {
     interface View {
         fun showData(appList: List<PedalfasterApp>)
-        fun onClick(pedalfasterApp: PedalfasterApp, enabled: Boolean)
     }
 }

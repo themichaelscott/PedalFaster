@@ -71,10 +71,6 @@ class EnabledAppsActivity : AppCompatActivity(), EnabledAppsContract.View {
         }
     }
 
-    override fun onClick(pedalfasterApp: PedalfasterApp, enabled: Boolean) {
-        Toast.makeText(this, "${pedalfasterApp.appName}, enabled: $enabled", Toast.LENGTH_SHORT).show()
-    }
-
     private fun getAvailableApps(): List<PedalfasterApp> {
         val mainIntent = Intent(Intent.ACTION_MAIN, null)
                 .apply { addCategory(Intent.CATEGORY_LAUNCHER) }

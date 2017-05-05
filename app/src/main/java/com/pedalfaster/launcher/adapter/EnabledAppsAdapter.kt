@@ -39,6 +39,7 @@ class EnabledAppsAdapter : RecyclerView.Adapter<EnabledAppsAdapter.ViewHolder>()
         val item = list[position]
         holder.appNameTextView.text = item.appName
         holder.appIconImageView.setImageDrawable(item.icon)
+        holder.appSelectedCheckbox.isChecked = item.enabled
     }
 
     class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_pedalfaster_app, parent, false)) {

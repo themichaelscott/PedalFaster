@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.pedalfaster.launcher.BusRegistry
+import com.pedalfaster.launcher.domain.AppDatabaseConfig
 import dagger.Module
 import dagger.Provides
+import org.dbtools.android.domain.config.DatabaseConfig
 import pocketbus.Bus
 import javax.inject.Singleton
 
@@ -16,6 +18,12 @@ class AppModule(private val application: Application) {
     @Singleton
     fun provideApplication(): Application {
         return application
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideDatabaseConfig(application: Application): DatabaseConfig {
+        return AppDatabaseConfig(application)
     }
 
     @Provides
