@@ -5,8 +5,9 @@ import android.content.pm.ActivityInfo
 import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import android.util.TypedValue
 import android.widget.Toast
+import com.devbrackets.android.recyclerext.layoutmanager.AutoColumnGridLayoutManager
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.adapter.EnabledAppsAdapter
 import com.pedalfaster.launcher.dagger.Injector
@@ -64,7 +65,10 @@ class EnabledAppsActivity : AppCompatActivity(), EnabledAppsContract.View {
             itemClickListener = { app, enabled -> enabledAppsPresenter.onClick(app, enabled) }
         }
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val iconSizeInPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 72f, resources.displayMetrics)
+        recyclerView.layoutManager = AutoColumnGridLayoutManager(this, iconSizeInPixels.toInt()).apply {
+            setMatchRowAndColumnSpacing(true)
+        }
     }
 
     override fun onClick(pedalfasterApp: PedalfasterApp, enabled: Boolean) {
