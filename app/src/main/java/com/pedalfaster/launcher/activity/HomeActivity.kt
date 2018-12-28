@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.job.Scheduler
+import com.pedalfaster.launcher.work.WorkScheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_home.*
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class HomeActivity : FragmentActivity() {
 
     @Inject
-    lateinit var scheduler: Scheduler
+    lateinit var scheduler: WorkScheduler
     @Inject
     lateinit var prefs: Prefs
     @Inject

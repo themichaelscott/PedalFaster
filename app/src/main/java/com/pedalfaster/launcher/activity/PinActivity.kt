@@ -7,7 +7,7 @@ import com.andrognito.pinlockview.IndicatorDots
 import com.andrognito.pinlockview.PinLockListener
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.job.Scheduler
+import com.pedalfaster.launcher.work.WorkScheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_pin.*
@@ -24,7 +24,7 @@ class PinActivity : AppCompatActivity() {
     @Inject
     lateinit var pedalFasterController: PedalFasterController
     @Inject
-    lateinit var scheduler: Scheduler
+    lateinit var scheduler: WorkScheduler
 
     private var newPin = DEFAULT_PIN
     private var attemptsRemaining = DEFAULT_PIN_ATTEMPTS

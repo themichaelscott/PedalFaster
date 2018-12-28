@@ -8,7 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.job.Scheduler
+import com.pedalfaster.launcher.work.WorkScheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import timber.log.Timber
@@ -21,7 +21,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var pedalFasterController: PedalFasterController
     @Inject
-    lateinit var scheduler: Scheduler
+    lateinit var scheduler: WorkScheduler
 
     init {
         Injector.get().inject(this)

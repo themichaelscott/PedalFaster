@@ -5,11 +5,9 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.IntentFilter
 import androidx.multidex.MultiDex
-import com.evernote.android.job.JobManager
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pedalfaster.launcher.dagger.AppModule
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.job.AppJobCreator
 import com.pedalfaster.launcher.logging.DebugTree
 import com.pedalfaster.launcher.logging.ReleaseTree
 import com.pedalfaster.launcher.prefs.Prefs
@@ -24,8 +22,6 @@ class App : Application() {
     @Inject
     lateinit var prefs: Prefs
     @Inject
-    lateinit var appJobCreator: AppJobCreator
-    @Inject
     lateinit var bluetoothBroadcastReceiver: BluetoothBroadcastReceiver
 
     init {
@@ -37,7 +33,6 @@ class App : Application() {
         AndroidThreeTen.init(this)
         Injector.get().inject(this)
         setupLogging()
-        JobManager.create(this).addJobCreator(appJobCreator)
 
         val filter = IntentFilter().apply {
             addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
