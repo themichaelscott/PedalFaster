@@ -7,7 +7,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class DelayedBluetoothCheckJob
-@Inject constructor(private val bus: Bus) : Job() {
+@Inject
+constructor(
+    private val bus: Bus
+) : Job() {
 
     override fun onRunJob(params: Job.Params): Job.Result {
         Timber.d("DelayedBluetoothCheckJob executed")
@@ -16,6 +19,6 @@ class DelayedBluetoothCheckJob
     }
 
     companion object {
-        val TAG = "DelayedBluetoothCheckJob"
+        const val TAG = "DelayedBluetoothCheckJob"
     }
 }

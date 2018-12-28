@@ -1,23 +1,24 @@
 package com.pedalfaster.launcher.logging
 
+import android.annotation.SuppressLint
 import android.util.Log
 import timber.log.Timber
 
 class ReleaseTree : Timber.Tree() {
 
     override fun isLoggable(tag: String?, priority: Int): Boolean {
-        when (priority) {
-            Log.VERBOSE, Log.DEBUG, Log.INFO -> return false
-            else -> return true
+        return when (priority) {
+            Log.VERBOSE, Log.DEBUG, Log.INFO -> false
+            else -> true
         }
     }
 
-    override fun log(priority: Int, tag: String, message: String, t: Throwable) {
+    @SuppressLint("LogNotTimber")
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (message.length < MAX_LOG_LENGTH) {
-            if (priority == Log.ASSERT) {
-                Log.wtf(tag, message)
-            } else {
-                Log.println(priority, tag, message)
+            when (priority) {
+                Log.ASSERT -> Log.wtf(tag, message)
+                else -> Log.println(priority, tag, message)
             }
             return
         }
@@ -31,10 +32,9 @@ class ReleaseTree : Timber.Tree() {
             do {
                 val end = Math.min(newline, i + MAX_LOG_LENGTH)
                 val part = message.substring(i, end)
-                if (priority == Log.ASSERT) {
-                    Log.wtf(tag, part)
-                } else {
-                    Log.println(priority, tag, part)
+                when (priority) {
+                    Log.ASSERT -> Log.wtf(tag, part)
+                    else -> Log.println(priority, tag, part)
                 }
                 i = end
             } while (i < newline)
@@ -43,7 +43,6 @@ class ReleaseTree : Timber.Tree() {
     }
 
     companion object {
-
-        val MAX_LOG_LENGTH = 4000
+        const val MAX_LOG_LENGTH = 4000
     }
 }

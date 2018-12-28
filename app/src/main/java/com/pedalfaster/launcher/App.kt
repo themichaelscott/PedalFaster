@@ -47,34 +47,34 @@ class App : Application() {
     }
 
     private fun setupLogging() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(DebugTree())
-        } else {
-            Timber.plant(ReleaseTree())
+        when {
+            BuildConfig.DEBUG -> Timber.plant(DebugTree())
+            else -> Timber.plant(ReleaseTree())
         }
     }
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
 
-        if (filesDir != null) {
-            MultiDex.install(this)
-        } else {
-            // During app install it might have experienced "INSTALL_FAILED_DEXOPT" (reinstall is the only known work-around)
-            // https://code.google.com/p/android/issues/detail?id=8886
-            val message = getString(R.string.app_name) + " is in a bad state, please uninstall/reinstall"
-            Timber.e(message)
+        when {
+            filesDir != null -> MultiDex.install(this)
+            else -> {
+                // During app install it might have experienced "INSTALL_FAILED_DEXOPT" (reinstall is the only known work-around)
+                // https://code.google.com/p/android/issues/detail?id=8886
+                val message = getString(R.string.app_name) + " is in a bad state, please uninstall/reinstall"
+                Timber.e(message)
+            }
         }
     }
 
     companion object {
 
-        val DEFAULT_TAG_PREFIX = "pedal."
+        const val DEFAULT_TAG_PREFIX = "pedal."
 
-        private val tempAuthenticated = false
+        private const val tempAuthenticated = false
         private val developmentMode = "debug".equals(BuildConfig.BUILD_TYPE, ignoreCase = true) // true to disable crash reports, analytics, etc..
-        private val devEnvironmentEnabled = false // enable developer settings/preferences
-        private val lastAppUseTS: Long = 0
+        private const val devEnvironmentEnabled = false // enable developer settings/preferences
+        private const val lastAppUseTS: Long = 0
     }
 
 

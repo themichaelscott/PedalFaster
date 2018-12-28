@@ -6,17 +6,18 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
 
-class AppJobCreator @Inject
-constructor(private val delayedBluetoothCheckJobProvider: Provider<DelayedBluetoothCheckJob>) : JobCreator {
+class AppJobCreator
+@Inject
+constructor(
+    private val delayedBluetoothCheckJobProvider: Provider<DelayedBluetoothCheckJob>
+) : JobCreator {
 
     override fun create(tag: String): Job? {
-        when (tag) {
-            DelayedBluetoothCheckJob.TAG -> {
-                return delayedBluetoothCheckJobProvider.get()
-            }
+        return when (tag) {
+            DelayedBluetoothCheckJob.TAG -> delayedBluetoothCheckJobProvider.get()
             else -> {
-                Timber.e("Cannot find job for tag [$tag]. Be sure to add creation to AppJobCreator")
-                return null
+                Timber.e("Cannot find job for tag [%s]. Be sure to add creation to AppJobCreator", tag)
+                null
             }
         }
     }

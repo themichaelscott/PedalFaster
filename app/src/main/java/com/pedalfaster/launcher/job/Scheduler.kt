@@ -9,16 +9,19 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class Scheduler
-@Inject constructor(val prefs: Prefs) {
+@Inject
+constructor(
+    val prefs: Prefs
+) {
 
     fun schedulePedalFasterInterrupter() {
         val startupWindow: Long = TimeUnit.SECONDS.toMillis(prefs.startupDelayBeforePrompt)
         val startupWindowBuffer = startupWindow + STARTUP_WINDOW_BUFFER_MS
         JobRequest.Builder(DelayedBluetoothCheckJob.TAG)
-                .setUpdateCurrent(true) // if an app is launched again, this will restart the counter for the bluetooth to start
-                .setExecutionWindow(startupWindow, startupWindowBuffer)
-                .build()
-                .schedule()
+            .setUpdateCurrent(true) // if an app is launched again, this will restart the counter for the bluetooth to start
+            .setExecutionWindow(startupWindow, startupWindowBuffer)
+            .build()
+            .schedule()
     }
 
     fun cancelPedalFasterInterrupter() {
@@ -28,6 +31,6 @@ class Scheduler
     }
 
     companion object {
-        private val STARTUP_WINDOW_BUFFER_MS = 5000
+        private const val STARTUP_WINDOW_BUFFER_MS = 5000
     }
 }

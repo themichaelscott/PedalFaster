@@ -19,7 +19,12 @@ import javax.inject.Singleton
 
 @Singleton
 class PedalFasterController
-@Inject constructor(private val application: Application, private val prefs: Prefs, bus: Bus) {
+@Inject
+constructor(
+    private val application: Application,
+    private val prefs: Prefs,
+    bus: Bus
+) {
 
     var showAlert = true
 
@@ -55,9 +60,10 @@ class PedalFasterController
 
     private fun showPedalFasterView() {
         val windowManagerParams = WindowManager.LayoutParams(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                PixelFormat.TRANSLUCENT)
+            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+            PixelFormat.TRANSLUCENT
+        )
         try {
             windowManager.addView(pedalFasterView, windowManagerParams)
         } catch (e: IllegalStateException) {
@@ -81,7 +87,7 @@ class PedalFasterController
         return bluetoothStatus
     }
 
-    public fun isPedalFasterTheDefaultLauncher(): Boolean {
+    fun isPedalFasterTheDefaultLauncher(): Boolean {
         val packageManager = application.packageManager
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)

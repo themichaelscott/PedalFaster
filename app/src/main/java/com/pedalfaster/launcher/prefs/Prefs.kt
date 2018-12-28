@@ -8,8 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Prefs @Inject
-constructor(private val preferences: SharedPreferences) {
+class Prefs
+@Inject
+constructor(
+    private val preferences: SharedPreferences
+) {
 
     var keepPedalingEnabled: Boolean
         get() = preferences.getBoolean(PREF_KEEP_PEDALING_ENABLED, true)
@@ -20,11 +23,11 @@ constructor(private val preferences: SharedPreferences) {
         set(startupWindow) = preferences.saveLong(PREF_STARTUP_DELAY_BEFORE_PROMPT, startupWindow)
 
     var activeBluetoothDeviceAddress: String
-        get() = preferences.getString(PREF_BLUETOOTH_DEVICE_ADDRESS, DEFAULT_BLUETOOTH_DEVICE_ADDRESS)
+        get() = preferences.getString(PREF_BLUETOOTH_DEVICE_ADDRESS, DEFAULT_BLUETOOTH_DEVICE_ADDRESS) ?: DEFAULT_BLUETOOTH_DEVICE_ADDRESS
         set(bluetoothDeviceAddress) = preferences.saveString(PREF_BLUETOOTH_DEVICE_ADDRESS, bluetoothDeviceAddress)
 
     var pin: String
-        get() = preferences.getString(PREF_PIN, "")
+        get() = preferences.getString(PREF_PIN, "") ?: ""
         set(pin) = preferences.saveString(PREF_PIN, pin)
 
     var pinLockExpiration: Long
@@ -32,16 +35,16 @@ constructor(private val preferences: SharedPreferences) {
         set(long) = preferences.saveLong(PREF_PIN_LOCK_EXPIRATION, long)
 
     companion object {
-        val PREF_KEEP_PEDALING_ENABLED = "PREF_KEEP_PEDALING_ENABLED"
-        val PREF_STARTUP_DELAY_BEFORE_PROMPT = "PREF_STARTUP_DELAY_BEFORE_PROMPT"
-        val PREF_BLUETOOTH_DEVICE_ADDRESS = "PREF_BLUETOOTH_DEVICE_ADDRESS"
-        val PREF_PIN = "PREF_PIN"
-        val PREF_PIN_LOCK_EXPIRATION = "PREF_PIN_LOCK_EXPIRATION"
+        const val PREF_KEEP_PEDALING_ENABLED = "PREF_KEEP_PEDALING_ENABLED"
+        const val PREF_STARTUP_DELAY_BEFORE_PROMPT = "PREF_STARTUP_DELAY_BEFORE_PROMPT"
+        const val PREF_BLUETOOTH_DEVICE_ADDRESS = "PREF_BLUETOOTH_DEVICE_ADDRESS"
+        const val PREF_PIN = "PREF_PIN"
+        const val PREF_PIN_LOCK_EXPIRATION = "PREF_PIN_LOCK_EXPIRATION"
 
-        val DEFAULT_STARTUP_WINDOW = 60L // in seconds
-        val PIN_LOCKOUT_EXPIRATION_IN_MINUTES = 10L
+        const val DEFAULT_STARTUP_WINDOW = 60L // in seconds
+        const val PIN_LOCKOUT_EXPIRATION_IN_MINUTES = 10L
 
-        private val DEFAULT_BLUETOOTH_DEVICE_ADDRESS = ""
+        private const val DEFAULT_BLUETOOTH_DEVICE_ADDRESS = ""
     }
 
 }

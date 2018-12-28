@@ -10,7 +10,10 @@ import javax.inject.Singleton
 
 @Singleton
 class BluetoothBroadcastReceiver
-@Inject constructor(private val pedalFasterController: PedalFasterController) : BroadcastReceiver() {
+@Inject
+constructor(
+    private val pedalFasterController: PedalFasterController
+) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
