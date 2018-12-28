@@ -34,7 +34,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    pocketknifeVersion = '3.2.1'
     pocketbusVersion = '1.1.0'
     daggerVersion = '2.9'
 }

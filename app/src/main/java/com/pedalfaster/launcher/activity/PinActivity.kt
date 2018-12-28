@@ -11,8 +11,9 @@ import com.pedalfaster.launcher.job.Scheduler
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.receiver.PedalFasterController
 import kotlinx.android.synthetic.main.activity_pin.*
-import pocketknife.PocketKnife
-import pocketknife.SaveState
+import me.eugeniomarletti.extras.bundle.BundleExtra
+import me.eugeniomarletti.extras.bundle.base.Int
+import me.eugeniomarletti.extras.bundle.base.String
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -21,29 +22,35 @@ class PinActivity : AppCompatActivity() {
     @Inject
     lateinit var prefs: Prefs
     @Inject
-    lateinit var pedalFasterController:PedalFasterController
+    lateinit var pedalFasterController: PedalFasterController
     @Inject
     lateinit var scheduler: Scheduler
 
-    @SaveState
-    var newPin = ""
-    @SaveState
-    var attemptsRemaining = 3
+    private var newPin = DEFAULT_PIN
+    private var attemptsRemaining = DEFAULT_PIN_ATTEMPTS
 
     init {
         Injector.get().inject(this)
     }
 
     private val pinLockListener = object : PinLockListener {
-        override fun onComplete(pin: String) { handlePin(pin) }
-        override fun onEmpty() { } // do nothing
-        override fun onPinChange(pinLength: Int, intermediatePin: String) { } // do nothing
+        override fun onComplete(pin: String) {
+            handlePin(pin)
+        }
+
+        override fun onEmpty() {} // do nothing
+        override fun onPinChange(pinLength: Int, intermediatePin: String) {} // do nothing
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pin)
-        PocketKnife.restoreInstanceState(this, savedInstanceState)
+        savedInstanceState?.let {
+            with(SaveStateOptions) {
+                newPin = it.newPin
+                attemptsRemaining = it.attemptsRemaining
+            }
+        }
         pinLockView.attachIndicatorDots(indicatorDots)
         pinLockView.setPinLockListener(pinLockListener)
         indicatorDots.indicatorType = IndicatorDots.IndicatorType.FIXED
@@ -66,9 +73,13 @@ class PinActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        PocketKnife.saveInstanceState(this, outState)
+        with(SaveStateOptions) {
+            outState.newPin = newPin
+            outState.attemptsRemaining = attemptsRemaining
+        }
+
     }
 
     private fun resetPinFields() {
@@ -125,9 +136,16 @@ class PinActivity : AppCompatActivity() {
         resetPinFields()
     }
 
+    object SaveStateOptions {
+        var Bundle.newPin by BundleExtra.String(defaultValue = DEFAULT_PIN)
+        var Bundle.attemptsRemaining by BundleExtra.Int(defaultValue = DEFAULT_PIN_ATTEMPTS)
+    }
+
     companion object {
-        val REQUEST_CODE = 1234 // the kind of combination an idiot would have on his luggage
-        val SUCCESS = 1
-        val FAIL = 2
+        const val REQUEST_CODE = 1234 // the kind of combination an idiot would have on his luggage
+        const val SUCCESS = 1
+        const val FAIL = 2
+        const val DEFAULT_PIN = ""
+        const val DEFAULT_PIN_ATTEMPTS = 3
     }
 }
