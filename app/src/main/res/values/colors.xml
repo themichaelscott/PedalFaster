@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#203F9F</color>
     <color name="colorAccent">@color/youtubeRed</color>
     <color name="pedalfaster_white">#FFFFFF</color>
+    <color name="pedalfaster_blocker_background">#BF000000</color> <!-- 75% https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4 -->
 
     <color name="app_theme_color">@color/colorPrimary</color>
-    <color name="transparent_gray_background">#1A000000</color>
+    <color name="transparent_gray_background">#1A000000</color> <!-- 10% https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4 -->
 
     <!-- Toolbar -->
     <color name="toolbar_icon">@color/pedalfaster_white</color>

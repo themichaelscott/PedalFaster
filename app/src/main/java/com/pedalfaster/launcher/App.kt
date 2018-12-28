@@ -4,7 +4,7 @@ import android.app.Application
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.IntentFilter
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import com.evernote.android.job.JobManager
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pedalfaster.launcher.dagger.AppModule

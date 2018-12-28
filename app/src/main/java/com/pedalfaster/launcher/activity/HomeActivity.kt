@@ -6,7 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
@@ -70,17 +70,17 @@ class HomeActivity : FragmentActivity() {
                     PinActivity.FAIL -> {
                         Timber.d("PIN FAILED")
                         prefs.pinLockExpiration = LocalDateTime.now()
-                                .plusMinutes(Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES)
-                                .atZone(ZoneId.systemDefault())
-                                .toInstant()
-                                .toEpochMilli()
+                            .plusMinutes(Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES)
+                            .atZone(ZoneId.systemDefault())
+                            .toInstant()
+                            .toEpochMilli()
 
                         MaterialDialog.Builder(this)
-                                .title(getString(R.string.prefs_locked_title))
-                                .content(getString(R.string.prefs_locked_message, Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES))
-                                .positiveText(getString(R.string.ok))
-                                .build()
-                                .show()
+                            .title(getString(R.string.prefs_locked_title))
+                            .content(getString(R.string.prefs_locked_message, Prefs.PIN_LOCKOUT_EXPIRATION_IN_MINUTES))
+                            .positiveText(getString(R.string.ok))
+                            .build()
+                            .show()
                     }
                     else -> {
                         // do nothing
@@ -94,15 +94,15 @@ class HomeActivity : FragmentActivity() {
     fun getOverlayPermission() {
         if (!Settings.canDrawOverlays(this)) {
             MaterialDialog.Builder(this)
-                    .title(R.string.permission_required_title)
-                    .content(R.string.permission_required_overlay_message)
-                    .positiveText(R.string.ok)
-                    .onPositive { _, _ ->
-                        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName))
-                        startActivityForResult(intent, OVERLAY_PERMISSION_CODE)
-                    }
-                    .build()
-                    .show()
+                .title(R.string.permission_required_title)
+                .content(R.string.permission_required_overlay_message)
+                .positiveText(R.string.ok)
+                .onPositive { _, _ ->
+                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName))
+                    startActivityForResult(intent, OVERLAY_PERMISSION_CODE)
+                }
+                .build()
+                .show()
         }
     }
 
@@ -113,24 +113,24 @@ class HomeActivity : FragmentActivity() {
         }
         if (prefs.keepPedalingEnabled && prefs.activeBluetoothDeviceAddress.isBlank()) {
             MaterialDialog.Builder(this)
-                    .title(R.string.bluetooth_required_title)
-                    .content(R.string.bluetooth_required_message)
-                    .positiveText(R.string.ok)
-                    .build()
-                    .show()
+                .title(R.string.bluetooth_required_title)
+                .content(R.string.bluetooth_required_message)
+                .positiveText(R.string.ok)
+                .build()
+                .show()
             return
         }
         if (!pedalFasterController.isPedalFasterTheDefaultLauncher()) {
             MaterialDialog.Builder(this)
-                    .content(getString(R.string.required_to_be_default_launcher_message))
-                    .positiveText(R.string.ok)
-                    .build()
-                    .show()
+                .content(getString(R.string.required_to_be_default_launcher_message))
+                .positiveText(R.string.ok)
+                .build()
+                .show()
             return
         }
         // TODO - exclude from recents isn't working as expected on a v21 device - works find on a 7.x
         val launchYouTubeIntent = packageManager.getLaunchIntentForPackage(YOUTUBE_PACKAGE)
-        launchYouTubeIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+        launchYouTubeIntent?.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         startActivity(launchYouTubeIntent)
     }
 
@@ -140,11 +140,11 @@ class HomeActivity : FragmentActivity() {
             startActivityForResult(intent, PinActivity.REQUEST_CODE)
         } else {
             MaterialDialog.Builder(this)
-                    .title(R.string.prefs_locked_title)
-                    .content(R.string.prefs_locked_message_try_again)
-                    .positiveText(R.string.ok)
-                    .build()
-                    .show()
+                .title(R.string.prefs_locked_title)
+                .content(R.string.prefs_locked_message_try_again)
+                .positiveText(R.string.ok)
+                .build()
+                .show()
         }
     }
 
@@ -153,8 +153,8 @@ class HomeActivity : FragmentActivity() {
     }
 
     companion object {
-        val OVERLAY_PERMISSION_CODE = 2017
-        val YOUTUBE_PACKAGE = "com.google.android.youtube"
+        const val OVERLAY_PERMISSION_CODE = 2017
+        const val YOUTUBE_PACKAGE = "com.google.android.youtube"
     }
 
 }

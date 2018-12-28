@@ -1,7 +1,7 @@
 package com.pedalfaster.launcher.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.fragment.SettingsFragment
 
@@ -21,8 +21,8 @@ class PreferenceActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFragment.newInstance())
-                    .commit()
+                .replace(R.id.container, SettingsFragment.newInstance())
+                .commit()
         }
     }
 }

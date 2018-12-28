@@ -2,9 +2,9 @@ package com.pedalfaster.launcher.fragment
 
 import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
-import android.support.v7.preference.PreferenceFragmentCompat
 import android.text.InputType
 import android.view.MenuItem
+import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
@@ -53,14 +53,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onPause()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            android.R.id.home -> {
-                activity?.finish()
-                return true
-            }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> activity?.finish()
             else -> return super.onOptionsItemSelected(item)
         }
+        return true
     }
 
     private fun buildFragment() {
@@ -81,13 +79,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun onStartupDelayPrefClick(): Boolean {
         MaterialDialog.Builder(requireContext())
-                .title(getString(R.string.prefs_startup_delay_title))
-                .inputType(InputType.TYPE_CLASS_NUMBER)
-                .input(getString(R.string.prefs_startup_delay_coaching_message), prefs.startupDelayBeforePrompt.toString(), false) { _, input ->
-                    prefs.startupDelayBeforePrompt = input.toString().toLong()
-                    updateStartupDelaySummary()
-                }
-                .show()
+            .title(getString(R.string.prefs_startup_delay_title))
+            .inputType(InputType.TYPE_CLASS_NUMBER)
+            .input(getString(R.string.prefs_startup_delay_coaching_message), prefs.startupDelayBeforePrompt.toString(), false) { _, input ->
+                prefs.startupDelayBeforePrompt = input.toString().toLong()
+                updateStartupDelaySummary()
+            }
+            .show()
         return true
     }
 
@@ -106,11 +104,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         if (deviceNameDisplayList.isEmpty()) {
             MaterialDialog.Builder(requireContext())
-                    .title(getString(R.string.prefs_no_bluetooth_devices_title))
-                    .content(getString(R.string.prefs_no_bluetooth_devices_message))
-                    .positiveText(R.string.ok)
-                    .build()
-                    .show()
+                .title(getString(R.string.prefs_no_bluetooth_devices_title))
+                .content(getString(R.string.prefs_no_bluetooth_devices_message))
+                .positiveText(R.string.ok)
+                .build()
+                .show()
             return true
         }
 
@@ -123,17 +121,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         MaterialDialog.Builder(requireContext())
-                .title(getString(R.string.prefs_bluetooth_devices_title))
-                .items(deviceNameDisplayList)
-                .itemsCallbackSingleChoice(selectedPosition) { _, _, which, _ ->
-                    if (which >= 0 && which < deviceAddressList.size) {
-                        prefs.activeBluetoothDeviceAddress = deviceAddressList[which]
-                        updateBluetoothDeviceSummary()
-                    }
-                    return@itemsCallbackSingleChoice true
+            .title(getString(R.string.prefs_bluetooth_devices_title))
+            .items(deviceNameDisplayList)
+            .itemsCallbackSingleChoice(selectedPosition) { _, _, which, _ ->
+                if (which >= 0 && which < deviceAddressList.size) {
+                    prefs.activeBluetoothDeviceAddress = deviceAddressList[which]
+                    updateBluetoothDeviceSummary()
                 }
-                .positiveText(R.string.ok)
-                .show()
+                return@itemsCallbackSingleChoice true
+            }
+            .positiveText(R.string.ok)
+            .show()
         return true
     }
 
