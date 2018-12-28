@@ -7,9 +7,10 @@ import com.andrognito.pinlockview.IndicatorDots
 import com.andrognito.pinlockview.PinLockListener
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.work.WorkScheduler
 import com.pedalfaster.launcher.prefs.Prefs
+import com.pedalfaster.launcher.receiver.InterruptionType
 import com.pedalfaster.launcher.receiver.PedalFasterController
+import com.pedalfaster.launcher.work.WorkScheduler
 import kotlinx.android.synthetic.main.activity_pin.*
 import me.eugeniomarletti.extras.bundle.BundleExtra
 import me.eugeniomarletti.extras.bundle.base.Int
@@ -68,7 +69,7 @@ class PinActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        scheduler.schedulePedalFasterInterrupter()
+        scheduler.schedulePedalFasterInterrupter(InterruptionType.LAUNCHED)
         pedalFasterController.showAlert = true
         super.onPause()
     }

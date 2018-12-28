@@ -1,8 +1,10 @@
 package com.pedalfaster.launcher.work
 
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.pedalfaster.launcher.prefs.Prefs
+import com.pedalfaster.launcher.receiver.InterruptionType
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -14,18 +16,29 @@ constructor(
     private val workManager: WorkManager
 ) {
 
-    fun schedulePedalFasterInterrupter() {
+    fun schedulePedalFasterInterrupter(interruptionType: InterruptionType) {
+        val delay = when (interruptionType) {
+            InterruptionType.LAUNCHED -> prefs.startupDelayBeforePrompt
+            InterruptionType.DISCONNECTED -> TOLERANCE
+        }
         val workRequest = OneTimeWorkRequest.Builder(DelayedBluetoothCheckWorker::class.java)
             .addTag(DelayedBluetoothCheckWorker.TAG)
-            .setInitialDelay(prefs.startupDelayBeforePrompt, TimeUnit.SECONDS)
+            .setInitialDelay(delay, TimeUnit.SECONDS)
             .build()
-        workManager.enqueue(workRequest)
+        workManager.beginUniqueWork(
+            DelayedBluetoothCheckWorker.TAG,
+            ExistingWorkPolicy.REPLACE,
+            workRequest
+        ).enqueue()
     }
 
     fun cancelPedalFasterInterrupter() {
         Timber.d("Bluetooth work cancel requested")
-        val canceledWork = workManager.cancelAllWorkByTag(DelayedBluetoothCheckWorker.TAG)
+        val canceledWork = workManager.cancelUniqueWork(DelayedBluetoothCheckWorker.TAG)
         Timber.d("Bluetooth work cancelled: %s", canceledWork)
     }
 
+    companion object {
+        const val TOLERANCE = 1L // seconds
+    }
 }

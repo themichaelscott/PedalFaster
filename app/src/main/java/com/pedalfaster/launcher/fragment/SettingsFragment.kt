@@ -8,9 +8,10 @@ import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.work.WorkScheduler
 import com.pedalfaster.launcher.prefs.Prefs
+import com.pedalfaster.launcher.receiver.InterruptionType
 import com.pedalfaster.launcher.receiver.PedalFasterController
+import com.pedalfaster.launcher.work.WorkScheduler
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -48,7 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onPause() {
-        scheduler.schedulePedalFasterInterrupter()
+        scheduler.schedulePedalFasterInterrupter(InterruptionType.LAUNCHED)
         pedalFasterController.showAlert = true
         super.onPause()
     }

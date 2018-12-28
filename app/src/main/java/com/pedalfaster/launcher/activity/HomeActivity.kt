@@ -10,9 +10,10 @@ import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pedalfaster.launcher.R
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.work.WorkScheduler
 import com.pedalfaster.launcher.prefs.Prefs
+import com.pedalfaster.launcher.receiver.InterruptionType
 import com.pedalfaster.launcher.receiver.PedalFasterController
+import com.pedalfaster.launcher.work.WorkScheduler
 import kotlinx.android.synthetic.main.activity_home.*
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -49,7 +50,7 @@ class HomeActivity : FragmentActivity() {
 
     override fun onPause() {
         // any time we navigate from the launcher, we will interrupt
-        scheduler.schedulePedalFasterInterrupter()
+        scheduler.schedulePedalFasterInterrupter(InterruptionType.LAUNCHED)
         pedalFasterController.showAlert = true
         super.onPause()
     }

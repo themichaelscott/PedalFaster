@@ -5,7 +5,7 @@ import androidx.annotation.WorkerThread
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.pedalfaster.launcher.dagger.Injector
-import com.pedalfaster.launcher.event.CheckBluetoothStatusEvent
+import com.pedalfaster.launcher.event.TriggerBluetoothCheckEvent
 import pocketbus.Bus
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class DelayedBluetoothCheckWorker(
     @WorkerThread
     override fun doWork(): Result {
         Timber.d("DelayedBluetoothCheckWorker executed")
-        bus.post(CheckBluetoothStatusEvent())
+        bus.post(TriggerBluetoothCheckEvent())
         return Result.SUCCESS
     }
 

@@ -6,9 +6,10 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.view.WindowManager
 import com.pedalfaster.launcher.R
-import com.pedalfaster.launcher.event.CheckBluetoothStatusEvent
+import com.pedalfaster.launcher.event.TriggerBluetoothCheckEvent
 import com.pedalfaster.launcher.prefs.Prefs
 import com.pedalfaster.launcher.view.PedalFasterView
+import com.pedalfaster.launcher.work.WorkScheduler
 import pocketbus.Bus
 import pocketbus.Subscribe
 import pocketbus.ThreadMode
@@ -23,6 +24,7 @@ class PedalFasterController
 constructor(
     private val application: Application,
     private val prefs: Prefs,
+    private val workScheduler: WorkScheduler,
     bus: Bus
 ) {
 
@@ -37,24 +39,29 @@ constructor(
     }
 
     fun updateBluetooth(deviceAddress: String, status: BluetoothStatus) {
-        bluetoothStatusMap.put(deviceAddress, status)
+        bluetoothStatusMap[deviceAddress] = status
         if (deviceAddress == prefs.activeBluetoothDeviceAddress) {
-            notifyOfBluetoothStatus()
+            checkBluetoothStatus(false)
         }
     }
 
     @Subscribe(ThreadMode.MAIN)
-    fun handle(event: CheckBluetoothStatusEvent) {
-        notifyOfBluetoothStatus()
+    fun handle(event: TriggerBluetoothCheckEvent) {
+        checkBluetoothStatus(true)
     }
 
     @Synchronized
-    fun notifyOfBluetoothStatus() {
+    fun checkBluetoothStatus(blockImmediately: Boolean) {
         when {
             !isPedalFasterTheDefaultLauncher() -> dismissPedalFasterView()
             !prefs.keepPedalingEnabled -> dismissPedalFasterView() // if keep pedaling is disabled, then make sure to dismiss any windows
             getActiveDeviceStatus() == BluetoothStatus.CONNECTED -> dismissPedalFasterView()
-            showAlert -> showPedalFasterView()
+            showAlert -> {
+                when {
+                    blockImmediately -> showPedalFasterView()
+                    else -> workScheduler.schedulePedalFasterInterrupter(InterruptionType.DISCONNECTED)
+                }
+            }
         }
     }
 
