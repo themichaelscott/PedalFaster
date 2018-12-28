@@ -56,7 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             android.R.id.home -> {
-                activity.finish()
+                activity?.finish()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -80,7 +80,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun onStartupDelayPrefClick(): Boolean {
-        MaterialDialog.Builder(context)
+        MaterialDialog.Builder(requireContext())
                 .title(getString(R.string.prefs_startup_delay_title))
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .input(getString(R.string.prefs_startup_delay_coaching_message), prefs.startupDelayBeforePrompt.toString(), false) { _, input ->
@@ -105,7 +105,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val deviceNameDisplayList = bondedDevicesList.map { "${it.name}\n${it.address}" }
 
         if (deviceNameDisplayList.isEmpty()) {
-            MaterialDialog.Builder(context)
+            MaterialDialog.Builder(requireContext())
                     .title(getString(R.string.prefs_no_bluetooth_devices_title))
                     .content(getString(R.string.prefs_no_bluetooth_devices_message))
                     .positiveText(R.string.ok)
@@ -122,7 +122,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        MaterialDialog.Builder(context)
+        MaterialDialog.Builder(requireContext())
                 .title(getString(R.string.prefs_bluetooth_devices_title))
                 .items(deviceNameDisplayList)
                 .itemsCallbackSingleChoice(selectedPosition) { _, _, which, _ ->
