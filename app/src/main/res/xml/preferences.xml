@@ -16,6 +16,11 @@
             android:dependency="PREF_KEEP_PEDALING_ENABLED"
             />
         <Preference
+            android:key="PREF_DELAY_BEFORE_PROMPT"
+            android:title="Delay"
+            android:dependency="PREF_KEEP_PEDALING_ENABLED"
+            />
+        <Preference
             android:key="PREF_BLUETOOTH_DEVICE_ADDRESS"
             android:title="Bluetooth Device"
             android:dependency="PREF_KEEP_PEDALING_ENABLED"

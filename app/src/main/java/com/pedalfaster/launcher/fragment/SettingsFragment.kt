@@ -72,6 +72,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference(Prefs.PREF_STARTUP_DELAY_BEFORE_PROMPT)?.setOnPreferenceClickListener { onStartupDelayPrefClick() }
         updateStartupDelaySummary()
 
+        // delay
+        findPreference(Prefs.PREF_DELAY_BEFORE_PROMPT)?.setOnPreferenceClickListener { onDelayPrefClick() }
+        updateDelaySummary()
+
         // bluetooth device
         findPreference(Prefs.PREF_BLUETOOTH_DEVICE_ADDRESS)?.setOnPreferenceClickListener { onBluetoothPrefClick() }
         updateBluetoothDeviceSummary()
@@ -90,9 +94,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
         return true
     }
 
+    private fun onDelayPrefClick(): Boolean {
+        MaterialDialog.Builder(requireContext())
+            .title(getString(R.string.prefs_delay_title))
+            .inputType(InputType.TYPE_CLASS_NUMBER)
+            .input(getString(R.string.prefs_delay_coaching_message), prefs.delayBeforePrompt.toString(), false) { _, input ->
+                prefs.delayBeforePrompt = input.toString().toLong()
+                updateDelaySummary()
+            }
+            .show()
+        return true
+    }
+
     private fun updateStartupDelaySummary(): Boolean {
         val startupDelayPref = findPreference(Prefs.PREF_STARTUP_DELAY_BEFORE_PROMPT)
         startupDelayPref?.summary = getString(R.string.prefs_startup_delay_message, prefs.startupDelayBeforePrompt)
+        return true
+    }
+
+    private fun updateDelaySummary(): Boolean {
+        val delayPref = findPreference(Prefs.PREF_DELAY_BEFORE_PROMPT)
+        delayPref?.summary = getString(R.string.prefs_delay_message, prefs.delayBeforePrompt)
         return true
     }
 

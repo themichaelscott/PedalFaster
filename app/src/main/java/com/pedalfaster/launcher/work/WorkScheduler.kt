@@ -19,7 +19,7 @@ constructor(
     fun schedulePedalFasterInterrupter(interruptionType: InterruptionType) {
         val delay = when (interruptionType) {
             InterruptionType.LAUNCHED -> prefs.startupDelayBeforePrompt
-            InterruptionType.DISCONNECTED -> TOLERANCE
+            InterruptionType.DISCONNECTED -> prefs.delayBeforePrompt
         }
         val workRequest = OneTimeWorkRequest.Builder(DelayedBluetoothCheckWorker::class.java)
             .addTag(DelayedBluetoothCheckWorker.TAG)
@@ -38,7 +38,4 @@ constructor(
         Timber.d("Bluetooth work cancelled: %s", canceledWork)
     }
 
-    companion object {
-        const val TOLERANCE = 1L // seconds
-    }
 }

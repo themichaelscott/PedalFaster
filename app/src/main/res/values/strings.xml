@@ -27,8 +27,11 @@
     <string name="prefs_locked_message">You have been locked out of Settings for %d minutes.</string>
     <string name="prefs_locked_message_try_again">You have exceeded the maximum number of pin attempts. Please try again later.</string>
     <string name="prefs_startup_delay_title">Startup Delay</string>
+    <string name="prefs_delay_title">Delay</string>
+    <string name="prefs_delay_coaching_message">Seconds to wait</string>
     <string name="prefs_startup_delay_coaching_message">Seconds to wait</string>
-    <string name="prefs_startup_delay_message">Wait %d seconds for pedaling once YouTube starts</string>
+    <string name="prefs_startup_delay_message">Wait %d second(s) for pedaling once YouTube starts</string>
+    <string name="prefs_delay_message">Wait %d second(s) before prompting user when stopped</string>
     <string name="prefs_no_bluetooth_devices_title">No Bluetooth Devices Available</string>
     <string name="prefs_no_bluetooth_devices_message">Please pair a bluetooth device and try again</string>
     <string name="prefs_bluetooth_devices_title">Bluetooth Devices</string>
